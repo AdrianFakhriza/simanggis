@@ -11,7 +11,7 @@ export default function Hero() {
       <div className="max-w-4xl mx-auto text-center">
         {/* Welcome Badge */}
         <div className="inline-flex items-center gap-2 px-6 py-3 mb-12 transition-all duration-300 border border-purple-200 rounded-full shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl">
-          <span className="font-medium text-purple-600">Welcome to Our Platform</span>
+          <span className="font-medium text-purple-600">Statistik Sekolah Terbaru</span>
           <svg 
             className="w-4 h-4 text-purple-600" 
             fill="none" 
@@ -61,7 +61,7 @@ export default function Hero() {
             e.target.style.background = 'linear-gradient(to right, #9333ea, #6366f1)';
           }}
         >
-          Get Started
+          Daftar Sekarang
         </button>
 
         {/* Decorative Elements */}
