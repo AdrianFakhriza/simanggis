@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Pastikan react-router-dom sudah terinstal
+import Logo from '../assets/Logo_SiMANGGIS.png';
 
 export default function Navbar() {
   return (
@@ -10,14 +11,13 @@ export default function Navbar() {
       }}
     >
       {/* Company Logo */}
-      {/* Menghapus mr-6 dari sini agar distribusi space-x pada nav utama lebih merata */}
-      {/* <div className="flex items-center flex-shrink-0 text-white"> 
+      <div className="flex items-center flex-shrink-0 text-white"> 
         <img 
-          src="path/to/your/logo.png" 
+          src={Logo}
           alt="Company Logo" 
-          className="w-auto h-10" 
+          className="w-auto h-12" 
         />
-      </div> */}
+      </div>
 
       {/* Navigation Links */}
       <div className="hidden gap-8 md:flex"> 
