@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Pastikan react-router-dom sudah terinstal
+import Logo from '../assets/Logo_SiMANGGIS.png';
 
 export default function Navbar() {
   return (
@@ -10,40 +11,38 @@ export default function Navbar() {
       }}
     >
       {/* Company Logo */}
-      {/* Menghapus mr-6 dari sini agar distribusi space-x pada nav utama lebih merata */}
       <div className="flex items-center flex-shrink-0 text-white"> 
-        {/* Penting: Ganti 'path/to/your/logo.png' dengan path logo Anda yang sebenarnya */}
         <img 
-          src="path/to/your/logo.png" 
+          src={Logo}
           alt="Company Logo" 
-          className="w-auto h-10" 
+          className="w-auto h-12" 
         />
       </div>
 
       {/* Navigation Links */}
       <div className="hidden gap-8 md:flex"> 
         <Link 
-          to="/" // Menggunakan 'to' untuk Link, dan path yang sesuai
+          to="http://127.0.0.1:8000/" // Menggunakan 'to' untuk Link, dan path yang sesuai
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
           Home
         </Link>
-        <Link 
-          to="/sekolah" // Contoh path untuk Sekolah
+        {/* <Link 
+          to="/sekolah" 
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
           Sekolah
         </Link>
         <Link 
-          to="/about" // Contoh path untuk About
+          to="/about" 
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
           About
-        </Link>
+        </Link> */}
       </div>
 
       {/* Auth Buttons */}
-      <div className="items-center hidden space-x-4 md:flex">
+      {/* <div className="items-center hidden space-x-4 md:flex">
         <button className="px-5 py-2 font-medium text-gray-700 transition duration-300 rounded-full hover:bg-purple-100">
           Login
         </button>
@@ -61,7 +60,7 @@ export default function Navbar() {
         >
           Register
         </button>
-      </div>
+      </div> */}
 
       {/* Mobile Menu Button (Hamburger Icon) */}
       <div className="md:hidden">

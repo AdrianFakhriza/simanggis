@@ -6,13 +6,14 @@ const Statistic = () => {
   const [selectedFilter, setSelectedFilter] = useState('minggu');
   const [stats, setStats] = useState({ siswaSudahMakan: 0, siswaBelumMakan: 0 });
   const [dataStatistik, setDataStatistik] = useState({ minggu: { data: [] }, bulan: { data: [] }, tahun: { data: [] } });
+  const [totalData, setTotalData] = useState({ sekolah: 0, guru: 0, siswa: 0 });
+
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/statistics')
       .then((response) => {
         const res = response.data.data;
 
-        // Update summary stats
         const totalSiswa = res.total.siswa;
         const sudahHariIni = res.total.siswa_sudah_makan_hari_ini;
 
@@ -20,6 +21,13 @@ const Statistic = () => {
           siswaSudahMakan: sudahHariIni,
           siswaBelumMakan: totalSiswa - sudahHariIni
         });
+
+        setTotalData({
+          sekolah: res.total.sekolah,
+          guru: res.total.guru,
+          siswa: res.total.siswa
+        });
+
 
         // Format data for charts
         const mingguData = res.mingguan.labels.map((label, index) => ({
@@ -78,6 +86,50 @@ const Statistic = () => {
   };
 
   return (
+    <>
+      <section className="relative py-20 text-center bg-blue-100"
+    style={{
+        background: 'linear-gradient(135deg, #f3e8ff 0%, #fdf2f8 50%, #e0e7ff 100%)'
+      }}>
+        
+      <div className="max-w-4xl px-4 mx-auto">
+        {/* Headline */}
+        <h2 className="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
+          Memantau Nutrisi Siswa di Seluruh Indonesia
+        </h2>
+
+        {/* Description */}
+        <p className="mb-12 text-lg text-gray-700 md:text-xl">
+          Platform monitoring makan bergizi gratis yang membantu memastikan setiap siswa mendapat nutrisi yang dibutuhkan. Data real-time untuk transparansi dan akuntabilitas program:
+        </p>
+
+        {/* Statistics from API */}
+        <div className="grid grid-cols-1 mb-12 overflow-hidden border border-purple-200 divide-x divide-purple-200 shadow-md md:grid-cols-3 rounded-xl bg-white/70 backdrop-blur-sm">
+        <div className="px-6 py-8 text-center">
+          <p className="text-4xl font-bold text-purple-700">{totalData.sekolah}</p>
+          <p className="mt-2 text-sm text-gray-600">Sekolah Terdaftar</p>
+        </div>
+        <div className="px-6 py-8 text-center">
+          <p className="text-4xl font-bold text-pink-600">{totalData.guru}</p>
+          <p className="mt-2 text-sm text-gray-600">Guru Terlibat</p>
+        </div>
+        <div className="px-6 py-8 text-center">
+          <p className="text-4xl font-bold text-indigo-600">{totalData.siswa}</p>
+          <p className="mt-2 text-sm text-gray-600">Siswa Terdaftar</p>
+        </div>
+      </div>
+      
+
+
+        {/* CTA Button */}
+        <button className="px-6 py-3 font-semibold text-black transition duration-300 bg-yellow-400 rounded shadow-md hover:bg-yellow-300">
+          READ CASE STUDY
+        </button>
+      </div>
+    </section>
+
+    
+  
     <div 
       className="relative p-8 overflow-hidden border shadow-2xl rounded-2xl backdrop-blur-sm border-purple-200/30"
       style={{
@@ -209,6 +261,7 @@ const Statistic = () => {
         </ResponsiveContainer>
       </div>
     </div>
+    </>
   );
 };
 
