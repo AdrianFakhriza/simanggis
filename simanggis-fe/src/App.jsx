@@ -8,6 +8,8 @@ import AdminSchools from "./pages/admin/schools";
 import SchoolForm from "./pages/admin/schools/create";
 import AdminStudent from "./pages/admin/students";
 import StudentForm from "./pages/admin/students/create";
+import AdminTeacher from "./pages/admin/teachers";
+import CreateTeacher from "./pages/admin/teachers/create";
 
 function App() {
   return (
@@ -36,6 +38,11 @@ function App() {
             <Route index element={<AdminStudent />} />
             <Route path="create" element={<StudentForm />} />
           </Route>
+
+          <Route path="teachers">
+            <Route index element={<AdminTeacher />} />
+            <Route path="create" element={< CreateTeacher />} />
+        </Route>
         </Route>
       </Routes>
     </BrowserRouter>

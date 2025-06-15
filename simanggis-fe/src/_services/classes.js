@@ -23,3 +23,25 @@ export const createClasses = async (data) => {
     throw error;
   }
 };
+
+/* Edit Class */
+export const updateClasses = async (id, data) => {
+  try {
+    const response = await API.put(`/class/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+/* Delete Class */
+export const deleteClasses = async (id) => {
+  try {
+    const response = await API.delete(`/class/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
