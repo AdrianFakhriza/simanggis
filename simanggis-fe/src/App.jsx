@@ -10,6 +10,7 @@ import AdminStudent from "./pages/admin/students";
 import StudentForm from "./pages/admin/students/create";
 import AdminTeacher from "./pages/admin/teachers";
 import CreateTeacher from "./pages/admin/teachers/create";
+import Login from "./pages/auth/login";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="create" element={< CreateTeacher />} />
         </Route>
         </Route>
+         <Route path="login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

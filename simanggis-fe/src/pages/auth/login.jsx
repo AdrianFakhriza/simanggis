@@ -21,7 +21,7 @@ export default function Login() {
       if (res.ok) {
         localStorage.setItem("token", data.access_token);
         // Redirect ke dashboard atau halaman lain
-        window.location.href = "/dashboard";
+        window.location.href = "/admin/teachers";
       } else {
         setError(data.error || "Login gagal");
       }
@@ -41,3 +41,5 @@ export default function Login() {
     </form>
   );
 }
+
+// HALAMAN"NYA PROTECTED ROUTESNYA;
