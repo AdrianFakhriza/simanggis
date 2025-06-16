@@ -18,8 +18,8 @@ export default function AdminTeacher() {
         const fetchTeachers = async () => {
             try {
                 const res = await getTeachers();
-                const data = await res.json();
-                setTeachers(data);
+                console.log("Response dari getTeachers:", res);
+                setTeachers(res);
             } catch {
                 setSuccess("Gagal mengambil data guru.");
             }

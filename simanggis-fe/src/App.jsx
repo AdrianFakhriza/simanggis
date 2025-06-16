@@ -33,7 +33,6 @@ function App() {
             <Route path="create" element={<SchoolForm />} />
             {/* Tambahkan rute lain untuk sekolah jika diperlukan */}
           </Route>
-
           <Route path="students">
             <Route index element={<AdminStudent />} />
             <Route path="create" element={<StudentForm />} />
