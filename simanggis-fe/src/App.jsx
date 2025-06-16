@@ -15,6 +15,10 @@ import StudentDetail from "./pages/admin/students/detail";
 import EditStudent from "./pages/admin/students/edit";
 import EditSchool from "./pages/admin/schools/detail";
 
+// Import guard route
+import PrivateRoute from "./components/privateRoute";
+import GuestRoute from "./components/guestRoute";
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,9 +28,15 @@ function App() {
           <Route index element={<Home />} />
         </Route>
 
-        {/* Rute untuk halaman admin */}
-
-        <Route path="admin" element={<AdminLayout />}>
+        {/* Rute untuk halaman admin yang diproteksi */}
+        <Route
+          path="admin"
+          element={
+            <PrivateRoute>
+              <AdminLayout />
+            </PrivateRoute>
+          }
+        >
           <Route path="classes">
             <Route index element={<AdminClasses />} />
             <Route path="create" element={<ClassForm />} />
@@ -34,12 +44,10 @@ function App() {
 
           <Route path="schools">
             <Route index element={<AdminSchools />} />
-
             <Route path="create" element={<SchoolForm />} />
             <Route path="detail" element={<EditSchool />} />
-
-            {/* Tambahkan rute lain untuk sekolah jika diperlukan */}
           </Route>
+
           <Route path="students">
             <Route index element={<AdminStudent />} />
             <Route path="create" element={<StudentForm />} />
@@ -49,10 +57,19 @@ function App() {
 
           <Route path="teachers">
             <Route index element={<AdminTeacher />} />
-            <Route path="create" element={< CreateTeacher />} />
+            <Route path="create" element={<CreateTeacher />} />
+          </Route>
         </Route>
-        </Route>
-         <Route path="login" element={<Login />} />
+
+        {/* Rute login hanya untuk tamu */}
+        <Route
+          path="login"
+          element={
+            <GuestRoute>
+              <Login />
+            </GuestRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
