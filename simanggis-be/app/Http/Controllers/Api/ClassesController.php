@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ClassesController extends Controller
 {
@@ -22,11 +23,14 @@ class ClassesController extends Controller
     public function store(Request $request)
     {
         $school_id = Auth::user()->school_id;
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'teacher_id' => 'required|exists:users,id',
             'class_name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $class = Classes::create([
             'school_id' => $school_id,
             'teacher_id' => $request->teacher_id,
@@ -38,25 +42,37 @@ class ClassesController extends Controller
 
     public function show($id)
     {
-        $class = Classes::with('school', 'students')->findOrFail($id);
+        $class = Classes::with('school', 'students')->find($id);
+        if (!$class) {
+            return response()->json(['error' => 'Class not found'], 404);
+        }
         return response()->json($class);
     }
 
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'class_name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'teacher_id' => 'required|exists:users,id',
         ]);
-        $class = Classes::findOrFail($id);
-        $class->update($validatedData);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $class = Classes::find($id);
+        if (!$class) {
+            return response()->json(['error' => 'Class not found'], 404);
+        }
+        $class->update($validator->validated());
         return response()->json(['message' => "Class '{$class->class_name}' updated successfully!", 'class' => $class]);
     }
 
     public function destroy($id)
     {
-        $class = Classes::findOrFail($id);
+        $class = Classes::find($id);
+        if (!$class) {
+            return response()->json(['error' => 'Class not found'], 404);
+        }
         $class->delete();
         return response()->json(['message' => 'Class deleted successfully!']);
     }

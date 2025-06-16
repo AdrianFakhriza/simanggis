@@ -8,6 +8,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class MealCheckController extends Controller
 {
@@ -40,7 +41,9 @@ class MealCheckController extends Controller
             ->where('meal_date', $meal_date)
             ->get()
             ->keyBy('student_id');
-
+        if ($students->isEmpty()) {
+            return response()->json(['error' => 'No students found for this class'], 404);
+        }
         return response()->json([
             'students' => $students,
             'mealDistributions' => $mealDistributions,
@@ -52,12 +55,18 @@ class MealCheckController extends Controller
     // Simpan absensi makanan (API)
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'class_id' => 'required|exists:classes,class_id',
+            'meal_date' => 'required|date',
+            'received' => 'array',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $class_id = $request->input('class_id');
         $meal_date = $request->input('meal_date');
-        $received = $request->input('received', []); // array student_id yang menerima
-
+        $received = $request->input('received', []);
         $students = Student::where('class_id', $class_id)->pluck('student_id');
-
         foreach ($students as $student_id) {
             MealDistribution::updateOrCreate(
                 [
@@ -71,7 +80,6 @@ class MealCheckController extends Controller
                 ]
             );
         }
-
         return response()->json(['message' => 'Absensi makanan berhasil disimpan.']);
     }
 }

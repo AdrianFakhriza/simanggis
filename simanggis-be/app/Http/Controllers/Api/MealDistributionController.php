@@ -9,6 +9,7 @@ use App\Models\School;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class MealDistributionController extends Controller
 {
@@ -36,12 +37,18 @@ class MealDistributionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'class_id' => 'required|exists:classes,class_id',
             'meal_date' => 'required|date',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $schoolId = Auth::user()->school_id;
-        $class = Classes::with('teacher')->findOrFail($request->class_id);
+        $class = Classes::with('teacher')->find($request->class_id);
+        if (!$class) {
+            return response()->json(['error' => 'Class not found'], 404);
+        }
         if (!$class->teacher_id) {
             return response()->json(['error' => 'Kelas ini belum memiliki guru.'], 422);
         }
@@ -69,26 +76,38 @@ class MealDistributionController extends Controller
 
     public function show($id)
     {
-        $distribution = MealDistribution::with('school')->findOrFail($id);
+        $distribution = MealDistribution::with('school')->find($id);
+        if (!$distribution) {
+            return response()->json(['error' => 'Distribution not found'], 404);
+        }
         return response()->json($distribution);
     }
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'school_id' => 'required|exists:schools,school_id',
             'meal_date' => 'required|date',
             'total_students' => 'required|integer',
             'meal_type' => 'required|string|max:50',
         ]);
-        $distribution = MealDistribution::findOrFail($id);
-        $distribution->update($request->all());
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $distribution = MealDistribution::find($id);
+        if (!$distribution) {
+            return response()->json(['error' => 'Distribution not found'], 404);
+        }
+        $distribution->update($validator->validated());
         return response()->json(['message' => 'Distribution updated successfully.', 'distribution' => $distribution]);
     }
 
     public function destroy($id)
     {
-        $distribution = MealDistribution::findOrFail($id);
+        $distribution = MealDistribution::find($id);
+        if (!$distribution) {
+            return response()->json(['error' => 'Distribution not found'], 404);
+        }
         $distribution->delete();
         return response()->json(['message' => 'Distribution deleted successfully.']);
     }

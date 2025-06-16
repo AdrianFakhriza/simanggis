@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules;
 
 class TeacherController extends Controller
 {
@@ -24,91 +24,55 @@ class TeacherController extends Controller
 
     public function store(Request $request)
     {
-        $schoolId = auth('api')->user()->school_id;
-
-        if (!$schoolId) {
-            return response()->json([
-                'message' => 'User does not belong to any school.'
-            ], 400);
-        }
-
+        $school = Auth::user()->school;
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'lowercase', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', 'min:8'],
         ]);
-
         if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return response()->json(['errors' => $validator->errors()], 422);
         }
-
-        $validated = $validator->validated();
-
         $teacher = User::create([
-            'name' => $validated['name'],
-            'username' => $validated['username'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'school_id' => $schoolId,
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'school_id' => $school->school_id,
             'role' => 'guru',
         ]);
-
-        return response()->json([
-            'message' => 'Teacher added successfully!',
-            'teacher' => $teacher,
-        ], 201);
+        return response()->json(['message' => 'Teacher added successfully!', 'teacher' => $teacher]);
     }
 
     public function update(Request $request, $id)
     {
         $teacher = User::find($id);
-
         if (!$teacher) {
-            return response()->json(['message' => 'Teacher not found.'], 404);
+            return response()->json(['error' => 'Teacher not found'], 404);
         }
-
-        $authUser = auth('api')->user();
-
-        if ($authUser->school_id !== $teacher->school_id) {
+        if (Auth::user()->school_id != $teacher->school_id) {
             return response()->json(['error' => 'Unauthorized.'], 403);
         }
-
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $teacher->id],
-            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'password' => ['nullable', 'confirmed', 'min:8'],
         ]);
-
         if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return response()->json(['errors' => $validator->errors()], 422);
         }
-
-        $validated = $validator->validated();
-
-        $updateData = [
-            'name' => $validated['name'],
-            'username' => $validated['username'],
-            'email' => $validated['email'],
+        $data = [
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
         ];
-
-        if (!empty($validated['password'])) {
-            $updateData['password'] = Hash::make($validated['password']);
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
         }
-
-        $teacher->update($updateData);
-
-        return response()->json([
-            'message' => 'Teacher updated successfully!',
-            'teacher' => $teacher
-        ]);
+        $teacher->update($data);
+        return response()->json(['message' => 'Teacher updated successfully!', 'teacher' => $teacher]);
     }
 
     public function show($id)
@@ -131,20 +95,11 @@ class TeacherController extends Controller
 
     public function destroy($id)
     {
-        $teacher = User::find($id);
-
-        if (!$teacher) {
-            return response()->json(['message' => 'Teacher not found.'], 404);
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'Teacher not found'], 404);
         }
-
-        $authUser = auth('api')->user();
-
-        if ($authUser->school_id !== $teacher->school_id) {
-            return response()->json(['error' => 'Unauthorized.'], 403);
-        }
-
-        $teacher->delete();
-
+        $user->delete();
         return response()->json(['message' => 'Teacher deleted successfully!']);
     }
 }

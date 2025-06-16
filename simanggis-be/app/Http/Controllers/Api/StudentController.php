@@ -7,6 +7,7 @@ use App\Models\Classes;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class StudentController extends Controller
 {
@@ -20,10 +21,13 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'class_id' => 'nullable|exists:classes,class_id',
             'name' => 'required|string|max:255'
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
         $student = Student::create([
             'school_id' => Auth::user()->school_id,
             'class_id' => $request->class_id,
@@ -34,11 +38,17 @@ class StudentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'class_id' => 'required|exists:classes,class_id',
         ]);
-        $student = Student::findOrFail($id);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        $student = Student::find($id);
+        if (!$student) {
+            return response()->json(['error' => 'Student not found'], 404);
+        }
         $student->update([
             'name' => $request->name,
             'class_id' => $request->class_id,
@@ -49,14 +59,20 @@ class StudentController extends Controller
 
     public function destroy($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::find($id);
+        if (!$student) {
+            return response()->json(['error' => 'Student not found'], 404);
+        }
         $student->delete();
         return response()->json(['message' => 'Student deleted successfully!']);
     }
 
     public function show($id)
     {
-        $student = Student::with('classes')->findOrFail($id);
+        $student = Student::with('classes')->find($id);
+        if (!$student) {
+            return response()->json(['error' => 'Student not found'], 404);
+        }
         return response()->json($student);
     }
 }
