@@ -5,9 +5,10 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -32,13 +33,101 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-      <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-      <button type="submit" disabled={loading}>{loading ? "Loading..." : "Login"}</button>
-    </form>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: "#f4f4f4",
+      }}
+    >
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          background: "#fff",
+          padding: 32,
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+          minWidth: 320,
+        }}
+      >
+        <h2 style={{ textAlign: "center", marginBottom: 24 }}>Login Admin</h2>
+        {error && (
+          <div
+            style={{
+              color: "#fff",
+              background: "#e74c3c",
+              padding: 8,
+              borderRadius: 4,
+              marginBottom: 16,
+              textAlign: "center",
+            }}
+          >
+            {error}
+          </div>
+        )}
+        <div style={{ marginBottom: 16 }}>
+          <label htmlFor="email" style={{ display: "block", marginBottom: 4 }}>
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Masukkan email"
+            value={form.email}
+            onChange={handleChange}
+            required
+            style={{
+              width: "100%",
+              padding: 8,
+              borderRadius: 4,
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
+        <div style={{ marginBottom: 24 }}>
+          <label
+            htmlFor="password"
+            style={{ display: "block", marginBottom: 4 }}
+          >
+            Password
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Masukkan password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            style={{
+              width: "100%",
+              padding: 8,
+              borderRadius: 4,
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            width: "100%",
+            padding: 10,
+            borderRadius: 4,
+            background: "#3498db",
+            color: "#fff",
+            border: "none",
+            fontWeight: "bold",
+            cursor: loading ? "not-allowed" : "pointer",
+          }}
+        >
+          {loading ? "Loading..." : "Login"}
+        </button>
+      </form>
+    </div>
   );
 }
 
