@@ -20,13 +20,15 @@ class AuthController extends Controller
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
         } catch (JWTException $e) {
-            return response()->json(['error' => 'Could not create token'], 500);
+            return response()->json(["err" => $e], 500);
+            // return response()->json(['error' => 'Could not create token'], 500);
         }
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+            'expires_in' => JWTAuth::factory()->getTTL() * 60
+
         ]);
     }
 
@@ -44,9 +46,9 @@ class AuthController extends Controller
     public function refresh()
     {
         return response()->json([
-            'access_token' => auth('api')->refresh(),
+            'access_token' => JWTAuth::parseToken()->refresh(),
             'token_type' => 'bearer',
-            'expires_in' => auth('api')->factory()->getTTL() * 60
+           'expires_in' => JWTAuth::factory()->getTTL() * 60
         ]);
     }
 }
