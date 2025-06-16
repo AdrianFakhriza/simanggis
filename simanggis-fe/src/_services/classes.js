@@ -2,8 +2,14 @@ import API from "../_api";
 
 // script pertama
 export const getClasses = async () => {
-  const { data } = await API.get("/class");
-  return data.data;
+    const token = localStorage.getItem("token");
+    const { data } = await API.get("/classes", {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+        },
+    });
+    return data;
 };
 
 /* script kedua cek response setelah script pertama error

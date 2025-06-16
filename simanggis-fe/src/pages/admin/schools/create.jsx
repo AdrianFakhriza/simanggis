@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createSchools } from "../../../_services/schools"; // Pastikan path ini sesuai dengan struktur proyek Anda
+import { useNavigate } from "react-router-dom";// Pastikan path ini sesuai dengan struktur proyek Anda
 // const CreateSchool = () => {
 //     const [form, setForm] = useState({
 //         school_name: "",

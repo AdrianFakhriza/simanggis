@@ -11,6 +11,9 @@ import StudentForm from "./pages/admin/students/create";
 import AdminTeacher from "./pages/admin/teachers";
 import CreateTeacher from "./pages/admin/teachers/create";
 import Login from "./pages/auth/login";
+import StudentDetail from "./pages/admin/students/detail";
+import EditStudent from "./pages/admin/students/edit";
+import EditSchool from "./pages/admin/schools/detail";
 
 function App() {
   return (
@@ -31,12 +34,17 @@ function App() {
 
           <Route path="schools">
             <Route index element={<AdminSchools />} />
+
             <Route path="create" element={<SchoolForm />} />
+            <Route path="detail" element={<EditSchool />} />
+
             {/* Tambahkan rute lain untuk sekolah jika diperlukan */}
           </Route>
           <Route path="students">
             <Route index element={<AdminStudent />} />
             <Route path="create" element={<StudentForm />} />
+            <Route path="detail/:id" element={<StudentDetail />} />
+            <Route path="edit/:id" element={<EditStudent />} />
           </Route>
 
           <Route path="teachers">

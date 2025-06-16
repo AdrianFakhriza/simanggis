@@ -2,17 +2,23 @@ import API from "../_api";
 
 // script pertama
 export const getSchools = async () => {
-  const { data } = await API.get("/school");
-  return data.data;
+  const token = localStorage.getItem("token");
+  const { data } = await API.get("/schools", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return data;
 };
 
 /* Penambah Buku */
-export const createSchools = async (data) => {
-  try {
-    const response = await API.post("/school", data);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
+export const updateSchool = async (schoolData) => {
+  const token = localStorage.getItem("token");
+  return await API.put(`/schools/${schoolData.school_id}`, schoolData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
 };
