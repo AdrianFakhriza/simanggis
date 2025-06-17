@@ -93,12 +93,9 @@ const Statistic = () => {
       }}>
         
       <div className="max-w-4xl px-4 mx-auto">
-        {/* Headline */}
         <h2 className="mb-4 text-3xl font-bold text-gray-800 md:text-4xl">
           Memantau Nutrisi Siswa di Seluruh Indonesia
         </h2>
-
-        {/* Description */}
         <p className="mb-12 text-lg text-gray-700 md:text-xl">
           Platform monitoring makan bergizi gratis yang membantu memastikan setiap siswa mendapat nutrisi yang dibutuhkan. Data real-time untuk transparansi dan akuntabilitas program:
         </p>
@@ -174,7 +171,7 @@ const Statistic = () => {
           </div>
         </div>
 
-        {/* Stats Summary */}
+        {/* Stats */}
         <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-2">
           <div 
             className="p-6 transition-all duration-300 border shadow-lg rounded-xl border-purple-200/30 hover:shadow-xl hover:scale-105"

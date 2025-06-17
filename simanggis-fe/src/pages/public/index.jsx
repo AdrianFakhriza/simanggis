@@ -1,13 +1,13 @@
-// import Hero from "../../components/hero";
+import Hero from "../../components/hero";
 import Statistic from "../../components/statistic";
-// import Testimonial from "../../components/testimonial";
+import Testimonial from "../../components/testimonial";
 
 export default function Home() {
     return (
       <>
-        {/* <Hero /> */}
+        <Hero />
         <Statistic />
-        {/* <Testimonial /> */}
+        <Testimonial />
       </>
     );
 }

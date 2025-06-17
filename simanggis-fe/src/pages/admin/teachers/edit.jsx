@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { editTeacher } from "../../_services/teachers";
+import { editTeacher } from "../../../_services/teachers";
 
 export default function EditTeacher({ match, history }) {
   const [form, setForm] = useState({ name: "", username: "", email: "" });

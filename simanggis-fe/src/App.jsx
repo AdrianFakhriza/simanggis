@@ -10,6 +10,7 @@ import AdminStudent from "./pages/admin/students";
 import StudentForm from "./pages/admin/students/create";
 import AdminTeacher from "./pages/admin/teachers";
 import CreateTeacher from "./pages/admin/teachers/create";
+import EditTeacher from "./pages/admin/teachers/edit";
 import Login from "./pages/auth/login";
 import StudentDetail from "./pages/admin/students/detail";
 import EditStudent from "./pages/admin/students/edit";
@@ -18,6 +19,7 @@ import EditSchool from "./pages/admin/schools/detail";
 // Import guard route
 import PrivateRoute from "./components/privateRoute";
 import GuestRoute from "./components/guestRoute";
+
 
 function App() {
   return (
@@ -58,6 +60,7 @@ function App() {
           <Route path="teachers">
             <Route index element={<AdminTeacher />} />
             <Route path="create" element={<CreateTeacher />} />
+            <Route path="edit/:id" element={<EditTeacher />} />
           </Route>
         </Route>
 
