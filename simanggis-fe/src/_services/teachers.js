@@ -43,3 +43,18 @@ export const deleteTeachers = async (id) => {
     throw error;
   }
 };
+
+const API_URL = "http://localhost:8000/api";
+
+export async function editTeacher(id, data, token) {
+  const res = await fetch(`${API_URL}/teachers/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) throw new Error("Gagal mengedit guru");
+  return await res.json();
+}
