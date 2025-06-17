@@ -37,22 +37,31 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
+
         $credentials = $request->only('email', 'password');
+
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
                 return response()->json(['error' => 'Invalid credentials'], 401);
             }
+
+            $user = JWTAuth::setToken($token)->toUser();
+
+            if ($user->role !== 'admin') {
+                return response()->json(['error' => 'Unauthorized, admin only'], 403);
+            }
         } catch (JWTException $e) {
-            return response()->json(["err" => $e], 500);
+            return response()->json(["err" => $e->getMessage()], 500);
         }
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => JWTAuth::factory()->getTTL() * 60
-
         ]);
     }
 
@@ -72,7 +81,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => JWTAuth::parseToken()->refresh(),
             'token_type' => 'bearer',
-           'expires_in' => JWTAuth::factory()->getTTL() * 60
+            'expires_in' => JWTAuth::factory()->getTTL() * 60
         ]);
     }
 }
