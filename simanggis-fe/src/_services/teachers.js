@@ -17,11 +17,12 @@ export const createTeachers = async (data) => {
     const response = await API.post("/teachers", data, {
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data", // penting kalau kamu pakai FormData
+        "Content-Type": "multipart/form-data",
+        Accept: "application/json", // penting kalau kamu pakai FormData
       },
     });
 
-    return response.data;
+    return response;
   } catch (error) {
     console.error(error);
     throw error;
@@ -43,17 +44,35 @@ export const deleteTeachers = async (id) => {
   }
 };
 
-const API_URL = "http://localhost:8000/api";
 
-export async function editTeacher(id, data, token) {
-  const res = await fetch(`${API_URL}/teachers/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
-  if (!res.ok) throw new Error("Gagal mengedit guru");
-  return await res.json();
-}
+export const editTeacher = async (id, data) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await API.put(`/teachers/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Edit teacher failed:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const getTeacherById = async (id) => {
+  try {
+    const token = localStorage.getItem("token"); // atau ambil dari tempat kamu simpan token
+    const response = await API.get("/teachers/" + id, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
