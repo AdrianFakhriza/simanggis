@@ -111,7 +111,7 @@ export default function AdminStudent() {
                                     <div className="flex justify-center gap-2">
                                         <div className="flex flex-col items-center">
                                             <Link
-                                                to={`/admin/students/${student.student_id}`}
+                                                to={`/admin/students/detail/${student.student_id}`}
                                                 className="flex flex-col items-center text-green-600 hover:underline"
                                             >
                                                 <svg

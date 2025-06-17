@@ -4,10 +4,17 @@ const API_URL = "http://localhost:8000/api";
 
 // script pertama
 export const getStudents = async () => {
-  const { data } = await API.get("/student");
-  return data.data;
-};
+  const token = localStorage.getItem("token"); // Ambil token dari localStorage
 
+  const { data } = await API.get("/students", {
+    headers: {
+      Authorization: `Bearer ${token}`,      // Header otorisasi
+      Accept: "application/json",            // Minta respon dalam format JSON
+    },
+  });
+
+  return data;
+};
 /* Penambah Buku */
 export const createStudents = async (data) => {
   try {

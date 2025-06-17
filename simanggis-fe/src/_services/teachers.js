@@ -1,8 +1,7 @@
 import API from "../_api";
 
 export const getTeachers = async () => {
-  // const token = localStorage.getItem("token"); // atau ambil dari tempat kamu simpan token
-  const token = "";
+  const token = localStorage.getItem("token"); // atau ambil dari tempat kamu simpan token
   const { data } = await API.get("/teachers", {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -14,7 +13,7 @@ export const getTeachers = async () => {
 
 export const createTeachers = async (data) => {
   try {
-    const token = "";
+    const token = localStorage.getItem("token"); // atau ambil dari tempat kamu simpan token
     const response = await API.post("/teachers", data, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -31,7 +30,7 @@ export const createTeachers = async (data) => {
 
 export const deleteTeachers = async (id) => {
   try {
-    const token = "";
+    const token = localStorage.getItem("token"); // atau ambil dari tempat kamu simpan token
     const response = await API.delete("/teachers/" + id, {
       headers: {
         Authorization: `Bearer ${token}`,

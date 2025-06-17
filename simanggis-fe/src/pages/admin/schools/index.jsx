@@ -18,6 +18,7 @@ export default function AdminSchools() {
 
     fetchSchool();
   }, []);
+  console.log(school);
   return (
     <div>
       <div className="mb-6">
