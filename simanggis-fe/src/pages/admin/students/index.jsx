@@ -60,13 +60,13 @@ export default function AdminStudent() {
                             <span className="mx-2 text-gray-400">/</span>
                         </li>
                         <li className="inline-flex items-center text-gray-500">
-                            Data Siswa
+                            Data Murid
                         </li>
                     </ol>
                 </nav>
             </div>
             <div className="flex justify-between mb-4">
-                <h2 className="text-2xl font-bold">Daftar Siswa</h2>
+                <h2 className="text-2xl font-bold">Data Murid</h2>
                 {success && (
                     <div className="p-2 text-green-600 bg-green-100 rounded">
                         {success}

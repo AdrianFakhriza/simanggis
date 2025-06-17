@@ -12,7 +12,7 @@ export default function StudentDetail() {
             try {
                 const data = await getStudentById(id);
                 setStudent(data);
-            } catch (err) {
+            } catch {
                 setError("Gagal mengambil data siswa.");
             }
         };

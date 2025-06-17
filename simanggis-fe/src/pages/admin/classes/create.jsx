@@ -8,20 +8,26 @@ export default function ClassForm() {
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await createClasses({ name, description }); // kirim data sebagai objek
-      navigate("/admin/classes"); // navigasi setelah berhasil
-    } catch (error) {
-      console.error("Error creating class:", error);
-    }
-  };
-
+  // Function to handle form reset
   const handleReset = () => {
     setName("");
     setDescription("");
   };
+
+  // Dummy data for teachers, replace with API call if needed
+  const [teacherId, setTeacherId] = useState("");
+  const [teachers, setTeachers] = useState([]);
+
+  React.useEffect(() => {
+    // Ganti dengan API endpoint yang sesuai untuk mengambil data guru
+    fetch("/api/teachers")
+      .then((res) => res.json())
+      .then((data) => setTeachers(data))
+      .catch((err) => {
+        console.error("Failed to fetch teachers:", err);
+        setTeachers([]);
+      });
+  }, []);
 
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -29,7 +35,17 @@ export default function ClassForm() {
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Form Tambah Kelas
         </h2>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            try {
+              await createClasses({ name, description, teacher_id: teacherId });
+              navigate("/admin/classes");
+            } catch (error) {
+              console.error("Error creating class:", error);
+            }
+          }}
+        >
           <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
             <div className="sm:col-span-2">
               <label
@@ -49,17 +65,23 @@ export default function ClassForm() {
                 required
               />
             </div>
-            {/* <div>
-                <label class="block text-gray-700">Wali Kelas</label>
-                <select name="teacher_id"
-                        class="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        required>
-                    <option value="">-- Pilih Wali Kelas --</option>
-                    @foreach ($teachers as $teacher)
-                        <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-                    @endforeach
-                </select>
-            </div> */}
+            <div>
+              <label className="block text-gray-700 dark:text-white">Wali Kelas</label>
+              <select
+                name="teacher_id"
+                value={teacherId}
+                onChange={(e) => setTeacherId(e.target.value)}
+                className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                required
+              >
+                <option value="">-- Pilih Wali Kelas --</option>
+                {teachers.map((teacher) => (
+                  <option key={teacher.id} value={teacher.id}>
+                    {teacher.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="sm:col-span-2">
               <label
                 htmlFor="description"

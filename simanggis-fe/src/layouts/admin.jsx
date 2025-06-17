@@ -82,30 +82,30 @@ export default function AdminLayout() {
               </Link>
             </li>
             <li>
-              <Link to="/admin/classes" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+              <Link to="/admin/teachers" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
-                <span className="ml-3">Daftar Kelas</span>
+                <span className="ml-3">Data Guru</span>
               </Link>
             </li>
           </ul>
 
           <ul className="pt-5 mt-5 space-y-2 border-t border-blue-200">
             <li>
-              <Link to="/admin/students" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+              <Link to="/admin/classes" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M16 14c2.21 0 4 1.79 4 4v1H4v-1c0-2.21 1.79-4 4-4h8zM12 12a4 4 0 100-8 4 4 0 000 8z" />
                 </svg>
-                <span className="ml-3">Daftar Siswa</span>
+                <span className="ml-3">Data Kelas</span>
               </Link>
             </li>
             <li>
-              <Link to="/admin/teachers" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+              <Link to="/admin/students" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M8 16v1a4 4 0 004 4 4 4 0 004-4v-1M12 12a4 4 0 100-8 4 4 0 000 8z" />
                 </svg>
-                <span className="ml-3">Daftar Guru</span>
+                <span className="ml-3">Data Murid</span>
               </Link>
             </li>
             <li>

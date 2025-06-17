@@ -2,20 +2,21 @@ import API from "../_api";
 
 const API_URL = "http://localhost:8000/api";
 
-// script pertama
+// Ambil semua siswa
 export const getStudents = async () => {
-  const token = localStorage.getItem("token"); // Ambil token dari localStorage
+  const token = localStorage.getItem("token");
 
   const { data } = await API.get("/students", {
     headers: {
-      Authorization: `Bearer ${token}`,      // Header otorisasi
-      Accept: "application/json",            // Minta respon dalam format JSON
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
     },
   });
 
   return data;
 };
-/* Penambah Buku */
+
+// Tambah siswa
 export const createStudents = async (data) => {
   try {
     const response = await API.post("/student", data);
@@ -26,6 +27,7 @@ export const createStudents = async (data) => {
   }
 };
 
+// Hapus siswa
 export async function deleteStudent(id, token) {
   const res = await fetch(`${API_URL}/students/${id}`, {
     method: "DELETE",
@@ -35,15 +37,29 @@ export async function deleteStudent(id, token) {
   return await res.json();
 }
 
-export async function addStudent(data, token) {
-  const res = await fetch(`${API_URL}/students`, {
-    method: "POST",
+// Ambil siswa berdasarkan ID
+export const getStudentById = async (id) => {
+  const token = localStorage.getItem("token");
+
+  const response = await API.get(`/students/${id}`, {
     headers: {
-      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Accept: "application/json",
     },
-    body: JSON.stringify(data),
   });
-  if (!res.ok) throw new Error("Gagal menambah siswa");
-  return await res.json();
-}
+
+  return response.data;
+};
+
+export const updateStudent = async (id, data) => {
+  const token = localStorage.getItem("token");
+
+  const response = await API.put(`/students/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+
+  return response.data;
+};
