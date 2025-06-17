@@ -19,6 +19,8 @@ import EditSchool from "./pages/admin/schools/detail";
 // Import guard route
 import PrivateRoute from "./components/privateRoute";
 import GuestRoute from "./components/guestRoute";
+import EditClass from "./pages/admin/classes/edit";
+import ClassDetailPage from "./pages/admin/classes/detail";
 
 
 function App() {
@@ -31,6 +33,7 @@ function App() {
         </Route>
 
         {/* Rute untuk halaman admin yang diproteksi */}
+        {/* admin */}
         <Route
           path="admin"
           element={
@@ -39,16 +42,22 @@ function App() {
             </PrivateRoute>
           }
         >
+          {/* admin/classes */}
           <Route path="classes">
             <Route index element={<AdminClasses />} />
             <Route path="create" element={<ClassForm />} />
+            <Route path="detail/:id" element={<ClassDetailPage />} />
+            <Route path="edit/:id" element={<EditClass />} />
           </Route>
 
+          {/* admin/schools */}
           <Route path="schools">
             <Route index element={<AdminSchools />} />
             <Route path="create" element={<SchoolForm />} />
             <Route path="detail" element={<EditSchool />} />
           </Route>
+
+          {/* admin/classes */}
 
           <Route path="students">
             <Route index element={<AdminStudent />} />
@@ -63,7 +72,7 @@ function App() {
             <Route path="edit/:id" element={<EditTeacher />} />
           </Route>
         </Route>
-
+          
         {/* Rute login hanya untuk tamu */}
         <Route
           path="login"

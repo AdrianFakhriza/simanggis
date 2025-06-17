@@ -4,14 +4,14 @@ const API_URL = "http://localhost:8000/api";
 
 // script pertama
 export const getClasses = async () => {
-    const token = localStorage.getItem("token");
-    const { data } = await API.get("/classes", {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-        },
-    });
-    return data;
+  const token = localStorage.getItem("token");
+  const { data } = await API.get("/classes", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return data;
 };
 
 /* script kedua cek response setelah script pertama error
@@ -24,44 +24,53 @@ export const getBooks = async () => {
 /* Penambah Buku */
 export const createClasses = async (data) => {
   try {
-    const response = await API.post("/class", data);
-    return response.data;
+    const token = localStorage.getItem("token");
+
+    const response = await API.post("/classes", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    return response;
   } catch (error) {
-    console.log(error);
+    console.error("Gagal membuat kelas:", error);
     throw error;
   }
 };
 
 /* Edit Class */
-export const updateClasses = async (id, data) => {
+export const updateClass = async (id, data) => {
+  const token = localStorage.getItem("token");
   try {
-    const response = await API.put(`/class/${id}`, data);
-    return response.data;
+    const response = await API.put(`/classes/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
   } catch (error) {
-    console.log(error);
+    console.error("Update error:", error.response?.data);
     throw error;
   }
 };
 
 /* Delete Class */
-export const deleteClasses = async (id) => {
+export const deleteClass = async (id) => {
+  const token = localStorage.getItem("token");
   try {
-    const response = await API.delete(`/class/${id}`);
+    const response = await API.delete(`/classes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.error("Gagal menghapus kelas:", error.response?.data || error.message);
     throw error;
   }
 };
-
-export async function deleteClass(id, token) {
-  const res = await fetch(`${API_URL}/classes/${id}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) throw new Error("Gagal menghapus kelas");
-  return await res.json();
-}
 
 export async function editClass(id, data, token) {
   const res = await fetch(`${API_URL}/classes/${id}`, {
@@ -76,10 +85,23 @@ export async function editClass(id, data, token) {
   return await res.json();
 }
 
-export async function getClassDetail(id, token) {
-  const res = await fetch(`${API_URL}/classes/${id}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  if (!res.ok) throw new Error("Gagal mengambil detail kelas");
-  return await res.json();
+export async function getClassDetail(id) {
+  const token = localStorage.getItem("token");
+
+  try {
+    const { data } = await API.get(`/classes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
+    return data; 
+  } catch (error) {
+    console.error(
+      "Gagal mengambil detail kelas:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
 }

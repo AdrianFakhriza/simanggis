@@ -42,7 +42,7 @@ class ClassesController extends Controller
 
     public function show($id)
     {
-        $class = Classes::with('school', 'students')->find($id);
+        $class = Classes::with('school', 'students', 'teacher')->find($id);
         if (!$class) {
             return response()->json(['error' => 'Class not found'], 404);
         }
