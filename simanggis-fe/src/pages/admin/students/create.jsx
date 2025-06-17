@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { createStudents } from "../../../_services/students"; // Pastikan path ini sesuai dengan struktur proyek Anda
+import { createStudents } from "../../../_services/students";
+import { getClasses } from "../../../_services/classes"; // pastikan path benar
 
-const StudentForm = ({ classes = [], onSubmit }) => {
+const StudentForm = ({ onSubmit }) => {
     const [name, setName] = useState("");
     const [classId, setClassId] = useState("");
+    const [classes, setClasses] = useState([]);
     const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Ambil data kelas dari API
+        const fetchClasses = async () => {
+            try {
+                const data = await getClasses();
+                setClasses(data);
+            } catch {
+                setClasses([]);
+            }
+        };
+        fetchClasses();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,11 +39,6 @@ const StudentForm = ({ classes = [], onSubmit }) => {
             setErrors(["Terjadi kesalahan saat menambah siswa"]);
         }
     };
-
-    // Contoh penggunaan useEffect tanpa isi:
-    React.useEffect(() => {
-        // kode efek di sini
-    }, []);
 
     return (
         <div className="flex items-center justify-center">

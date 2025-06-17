@@ -1,6 +1,6 @@
 import API from "../_api";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = "http://localhost:8000/api/students";
 
 // Ambil semua siswa
 export const getStudents = async () => {
@@ -19,13 +19,22 @@ export const getStudents = async () => {
 // Tambah siswa
 export const createStudents = async (data) => {
   try {
-    const response = await API.post("/student", data);
+    const token = localStorage.getItem("token");
+
+    const response = await API.post("/students", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+
     return response.data;
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
+
 
 // Hapus siswa
 export async function deleteStudent(id, token) {

@@ -40,11 +40,7 @@ export default function StudentDetail() {
             <h2 className="mb-4 text-2xl font-bold">Detail Siswa</h2>
             <div className="space-y-2">
                 <div><strong>Nama:</strong> {student.name}</div>
-                <div><strong>Email:</strong> {student.email || "-"}</div>
                 <div><strong>Kelas:</strong> {student.classes?.class_name || "-"}</div>
-                <div><strong>Alamat:</strong> {student.address || "-"}</div>
-                <div><strong>Jenis Kelamin:</strong> {student.gender || "-"}</div>
-                <div><strong>Tanggal Lahir:</strong> {student.birth_date || "-"}</div>
                 {/* Tambahkan info lain jika ada */}
             </div>
         </div>

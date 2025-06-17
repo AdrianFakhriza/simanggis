@@ -73,7 +73,7 @@ export default function AdminStudent() {
                     </div>
                 )}
                 <Link
-                    to="/admin/students/add"
+                    to="/admin/students/create"
                     className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
                 >
                     + Tambah Siswa
