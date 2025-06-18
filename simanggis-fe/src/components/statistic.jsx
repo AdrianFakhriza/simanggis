@@ -152,7 +152,7 @@ const Statistic = () => {
             >
               Statistik Makan Bergizi Gratis
             </h3>
-            <p className="text-lg text-gray-600">Monitor data siswa yang sudah & belum mendapat makan bergizi</p>
+            <p className="text-lg text-gray-600">Monitor data siswa yang sudah & belum mendapatkan makan bergizi gratis</p>
           </div>
           <div>
             <select 

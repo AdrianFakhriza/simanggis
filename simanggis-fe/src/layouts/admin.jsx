@@ -1,5 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Logo from '../assets/Logo_SiMANGGIS.png';
+
 
 export default function AdminLayout() {
   return (
@@ -19,14 +21,13 @@ export default function AdminLayout() {
               <span className="sr-only">Toggle Sidebar</span>
             </button>
             <Link to="/" className="flex items-center justify-between mr-4">
-              <img
-                src="https://flowbite.s3.amazonaws.com/logo.svg"
-                className="mr-3 h-9"
-                alt="Logo"
-              />
-              <span className="self-center text-2xl font-bold tracking-tight text-blue-700 dark:text-white">
-                Simanggis
-              </span>
+              <div className="flex items-center flex-shrink-0 text-white"> 
+                      <img 
+                        src={Logo}
+                        alt="Company Logo" 
+                        className="w-auto h-12" 
+                      />
+                    </div>
             </Link>
           </div>
           <div className="flex items-center lg:order-2">
@@ -62,14 +63,6 @@ export default function AdminLayout() {
                   <path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0l-7 7-2-2" />
                 </svg>
                 <span className="ml-3">Dashboard</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/admin/users" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
-                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M17 20h5v-2a4 4 0 00-3-3.87M9 20h6M4 20h5v-2a4 4 0 00-3-3.87M12 12a4 4 0 100-8 4 4 0 000 8z" />
-                </svg>
-                <span className="ml-3">Users</span>
               </Link>
             </li>
             <li>

@@ -37,8 +37,9 @@ export const createStudents = async (data) => {
 
 
 // Hapus siswa
-export async function deleteStudent(id, token) {
-  const res = await fetch(`${API_URL}/students/${id}`, {
+export async function deleteStudent(id) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`http://localhost:8000/api/students/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
   });

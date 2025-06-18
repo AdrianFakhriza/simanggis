@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getStudents } from "../../../_services/students";
+import { deleteStudent, getStudents } from "../../../_services/students";
 
 
 
@@ -21,18 +21,17 @@ export default function AdminStudent() {
     }, []);
 
     const handleDelete = async (studentId) => {
-        if (window.confirm("Yakin ingin menghapus siswa ini?")) {
-            try {
-                // TODO: Replace with actual API call
-                // Example: await api.deleteStudent(studentId);
-                const updatedList = studentList.filter(s => s.student_id !== studentId);
-                setStudentList(updatedList);
-                setSuccess("Siswa berhasil dihapus!");
-            } catch {
-                setSuccess("Gagal menghapus siswa.");
-            }
+    if (window.confirm("Yakin ingin menghapus siswa ini?")) {
+        try {
+            await deleteStudent(studentId); // panggil API hapus
+            const updatedList = studentList.filter(s => s.student_id !== studentId);
+            setStudentList(updatedList);
+            setSuccess("Siswa berhasil dihapus!");
+        } catch {
+            setSuccess("Gagal menghapus siswa.");
         }
-    };
+    }
+};
 
     return (
         <div>
