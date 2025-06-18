@@ -5,8 +5,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,100 +32,37 @@ export default function Login() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#f4f4f4",
-      }}
-    >
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          background: "#fff",
-          padding: 32,
-          borderRadius: 8,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-          minWidth: 320,
-        }}
-      >
-        <h2 style={{ textAlign: "center", marginBottom: 24 }}>Login Admin</h2>
-        {error && (
-          <div
-            style={{
-              color: "#fff",
-              background: "#e74c3c",
-              padding: 8,
-              borderRadius: 4,
-              marginBottom: 16,
-              textAlign: "center",
-            }}
-          >
-            {error}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
+        <h2 className="text-2xl font-bold mb-4 text-center">Login Admin</h2>
+        {error && <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-2 text-center">{error}</div>}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div>
+            <label htmlFor="email" className="block mb-1 font-medium">
+              Email
+            </label>
+            <input id="email" name="email" type="email" placeholder="Masukkan email" value={form.email} onChange={handleChange} required className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" />
           </div>
-        )}
-        <div style={{ marginBottom: 16 }}>
-          <label htmlFor="email" style={{ display: "block", marginBottom: 4 }}>
-            Email
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Masukkan email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            style={{
-              width: "100%",
-              padding: 8,
-              borderRadius: 4,
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
-        <div style={{ marginBottom: 24 }}>
-          <label
-            htmlFor="password"
-            style={{ display: "block", marginBottom: 4 }}
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Masukkan password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            style={{
-              width: "100%",
-              padding: 8,
-              borderRadius: 4,
-              border: "1px solid #ccc",
-            }}
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: "100%",
-            padding: 10,
-            borderRadius: 4,
-            background: "#3498db",
-            color: "#fff",
-            border: "none",
-            fontWeight: "bold",
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
-        >
-          {loading ? "Loading..." : "Login"}
-        </button>
-      </form>
+          <div>
+            <label htmlFor="password" className="block mb-1 font-medium">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Masukkan password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+            />
+          </div>
+          <button type="submit" disabled={loading} className="w-full py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition disabled:opacity-60">
+            {loading ? "Loading..." : "Login"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

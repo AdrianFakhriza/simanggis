@@ -11,8 +11,9 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        $school = Auth::user()->school;
-        return view('schools.index', compact('school'));
+        // Ambil semua sekolah beserta relasi statistik
+        $schools = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->get();
+        return view('schools.index', compact('schools'));
     }
 
     public function showEditForm()
@@ -50,8 +51,8 @@ class SchoolController extends Controller
 
     public function show($id)
     {
-        $school = School::with(['students', 'students.meals', 'feedbacks'])->findOrFail($id);
-        return view('schools.show', compact('school'));
+        $school = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->findOrFail($id);
+        return view('sekolah.show', compact('school'));
     }
 
     public function edit($id)
@@ -80,5 +81,108 @@ class SchoolController extends Controller
         // if( )
         // $school->delete();
         // return redirect()->route('schools.index')->with('success', 'School deleted successfully.');
+    }
+
+    // Halaman publik: daftar semua sekolah dan statistik
+    public function publicIndex()
+    {
+        $schools = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->get();
+        foreach ($schools as $school) {
+            // Statistik siswa sudah/belum makan per sekolah (hari ini)
+            $school->siswaSudahMakan = $school->mealDistributions()->whereDate('meal_date', now()->toDateString())->where('status', 'received')->count();
+            $school->siswaBelumMakan = $school->mealDistributions()->whereDate('meal_date', now()->toDateString())->where('status', 'not_received')->count();
+
+            // Statistik minggu ini (7 hari terakhir)
+            $startOfWeek = now()->copy()->subDays(6)->startOfDay();
+            $endOfWeek = now()->copy()->endOfDay();
+            $statistikMinggu = $school->mealDistributions()
+                ->selectRaw('DATE(meal_date) as tanggal, SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah, SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+                ->whereBetween('meal_date', [$startOfWeek, $endOfWeek])
+                ->groupBy('tanggal')
+                ->orderBy('tanggal')
+                ->get();
+            $school->labelsMinggu = $statistikMinggu->pluck('tanggal')->map(fn($t) => \Carbon\Carbon::parse($t)->translatedFormat('d M'))->toArray();
+            $school->dataMingguSudah = $statistikMinggu->pluck('sudah')->toArray();
+            $school->dataMingguBelum = $statistikMinggu->pluck('belum')->toArray();
+
+            // Statistik bulan ini (30 hari terakhir)
+            $startOfMonth = now()->copy()->subDays(29)->startOfDay();
+            $endOfMonth = now()->copy()->endOfDay();
+            $statistikBulan = $school->mealDistributions()
+                ->selectRaw('DATE(meal_date) as tanggal, SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah, SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+                ->whereBetween('meal_date', [$startOfMonth, $endOfMonth])
+                ->groupBy('tanggal')
+                ->orderBy('tanggal')
+                ->get();
+            $school->labelsBulan = $statistikBulan->pluck('tanggal')->map(fn($t) => \Carbon\Carbon::parse($t)->format('d M'))->toArray();
+            $school->dataBulanSudah = $statistikBulan->pluck('sudah')->toArray();
+            $school->dataBulanBelum = $statistikBulan->pluck('belum')->toArray();
+
+            // Statistik tahun ini (per bulan)
+            $startOfYear = now()->copy()->startOfYear();
+            $endOfYear = now()->copy()->endOfDay();
+            $statistikTahun = $school->mealDistributions()
+                ->selectRaw('MONTH(meal_date) as bulan, SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah, SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+                ->whereBetween('meal_date', [$startOfYear, $endOfYear])
+                ->groupBy('bulan')
+                ->orderBy('bulan')
+                ->get();
+            $bulanIndo = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            $school->labelsTahun = $statistikTahun->pluck('bulan')->map(fn($b) => $bulanIndo[$b - 1])->toArray();
+            $school->dataTahunSudah = $statistikTahun->pluck('sudah')->toArray();
+            $school->dataTahunBelum = $statistikTahun->pluck('belum')->toArray();
+        }
+        return view('sekolah.index', compact('schools'));
+    }
+
+    // Halaman publik: detail sekolah
+    public function publicShow($id)
+    {
+        $school = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->findOrFail($id);
+        // Statistik siswa sudah/belum makan per sekolah (hari ini)
+        $school->siswaSudahMakan = $school->mealDistributions()->whereDate('meal_date', now()->toDateString())->where('status', 'received')->count();
+        $school->siswaBelumMakan = $school->mealDistributions()->whereDate('meal_date', now()->toDateString())->where('status', 'not_received')->count();
+
+        // Statistik minggu ini (7 hari terakhir)
+        $startOfWeek = now()->copy()->subDays(6)->startOfDay();
+        $endOfWeek = now()->copy()->endOfDay();
+        $statistikMinggu = $school->mealDistributions()
+            ->selectRaw('DATE(meal_date) as tanggal, SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah, SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+            ->whereBetween('meal_date', [$startOfWeek, $endOfWeek])
+            ->groupBy('tanggal')
+            ->orderBy('tanggal')
+            ->get();
+        $school->labelsMinggu = $statistikMinggu->pluck('tanggal')->map(fn($t) => \Carbon\Carbon::parse($t)->translatedFormat('d M'))->toArray();
+        $school->dataMingguSudah = $statistikMinggu->pluck('sudah')->toArray();
+        $school->dataMingguBelum = $statistikMinggu->pluck('belum')->toArray();
+
+        // Statistik bulan ini (30 hari terakhir)
+        $startOfMonth = now()->copy()->subDays(29)->startOfDay();
+        $endOfMonth = now()->copy()->endOfDay();
+        $statistikBulan = $school->mealDistributions()
+            ->selectRaw('DATE(meal_date) as tanggal, SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah, SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+            ->whereBetween('meal_date', [$startOfMonth, $endOfMonth])
+            ->groupBy('tanggal')
+            ->orderBy('tanggal')
+            ->get();
+        $school->labelsBulan = $statistikBulan->pluck('tanggal')->map(fn($t) => \Carbon\Carbon::parse($t)->format('d M'))->toArray();
+        $school->dataBulanSudah = $statistikBulan->pluck('sudah')->toArray();
+        $school->dataBulanBelum = $statistikBulan->pluck('belum')->toArray();
+
+        // Statistik tahun ini (per bulan)
+        $startOfYear = now()->copy()->startOfYear();
+        $endOfYear = now()->copy()->endOfDay();
+        $statistikTahun = $school->mealDistributions()
+            ->selectRaw('MONTH(meal_date) as bulan, SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah, SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+            ->whereBetween('meal_date', [$startOfYear, $endOfYear])
+            ->groupBy('bulan')
+            ->orderBy('bulan')
+            ->get();
+        $bulanIndo = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        $school->labelsTahun = $statistikTahun->pluck('bulan')->map(fn($b) => $bulanIndo[$b - 1])->toArray();
+        $school->dataTahunSudah = $statistikTahun->pluck('sudah')->toArray();
+        $school->dataTahunBelum = $statistikTahun->pluck('belum')->toArray();
+
+        return view('sekolah.show', compact('school'));
     }
 }

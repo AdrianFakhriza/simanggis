@@ -23,6 +23,11 @@ Route::get('/', function () {
 
 Route::view('/teams', 'teams')->name('teams');
 
+// Halaman publik sekolah (tanpa login)
+Route::get('/sekolah', [SchoolController::class, 'publicIndex'])->name('sekolah.index');
+Route::get('/sekolah/{school}', [SchoolController::class, 'publicShow'])->name('sekolah.show');
+
+
 // -----------------------------
 // Authenticated & Verified Routes
 // -----------------------------

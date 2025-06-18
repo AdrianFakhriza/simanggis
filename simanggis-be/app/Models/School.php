@@ -32,4 +32,14 @@ class School extends Model
     {
         return $this->hasMany(User::class, 'school_id');
     }
+
+    public function classes()
+    {
+        return $this->hasMany(Classes::class, 'school_id', 'school_id');
+    }
+
+    public function feedback()
+    {
+        return $this->hasMany(\App\Models\Feedback::class, 'school_id', 'school_id');
+    }
 }
