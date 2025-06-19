@@ -32,11 +32,11 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url('http://localhost:5173/') }}"
+                        <a href="{{ url('/sekolah') }}"
                            class="block py-2 px-3 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:p-0 md:dark:hover:text-blue-500 md:dark:hover:bg-transparent {{ request()->is('teams') ? 'text-blue-600 md:hover:text-blue-600' : 'text-gray-900 md:hover:text-blue-600' }}"
                            aria-current="{{ request()->is('teams') ? 'page' : '' }}"
                            data-aos="fade-down">
-                            Statistics
+                            Sekolah
                         </a>
                     </li>
                 </ul>

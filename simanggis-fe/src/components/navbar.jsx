@@ -42,11 +42,11 @@ export default function Navbar() {
       </div>
 
       {/* Auth Buttons */}
-      {/* <div className="items-center hidden space-x-4 md:flex">
-        <button className="px-5 py-2 font-medium text-gray-700 transition duration-300 rounded-full hover:bg-purple-100">
+      <div className="items-center hidden space-x-4 md:flex">
+        <Link to="/login" className="px-5 py-2 font-medium text-gray-700 transition duration-300 rounded-full hover:bg-purple-100">
           Login
-        </button>
-        <button 
+        </Link>
+        <Link to="/register"
           className="px-6 py-2 font-medium text-white transition duration-300 transform rounded-full shadow-md hover:scale-105"
           style={{
             background: 'linear-gradient(to right, #9333ea, #6366f1)',
@@ -59,8 +59,8 @@ export default function Navbar() {
           }}
         >
           Register
-        </button>
-      </div> */}
+        </Link>
+      </div>
 
       {/* Mobile Menu Button (Hamburger Icon) */}
       <div className="md:hidden">

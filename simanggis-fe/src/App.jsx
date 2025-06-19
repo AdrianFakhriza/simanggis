@@ -12,6 +12,7 @@ import AdminTeacher from "./pages/admin/teachers";
 import CreateTeacher from "./pages/admin/teachers/create";
 import EditTeacher from "./pages/admin/teachers/edit";
 import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
 import StudentDetail from "./pages/admin/students/detail";
 import EditStudent from "./pages/admin/students/edit";
 import EditSchool from "./pages/admin/schools/detail";
@@ -79,6 +80,14 @@ function App() {
           element={
             <GuestRoute>
               <Login />
+            </GuestRoute>
+          }
+        />
+        <Route
+          path="register"
+          element={
+            <GuestRoute>
+              <Register />
             </GuestRoute>
           }
         />
