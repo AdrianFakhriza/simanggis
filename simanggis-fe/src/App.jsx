@@ -12,10 +12,11 @@ import AdminTeacher from "./pages/admin/teachers";
 import CreateTeacher from "./pages/admin/teachers/create";
 import EditTeacher from "./pages/admin/teachers/edit";
 import Login from "./pages/auth/login";
-import Register from "./pages/auth/register";
 import StudentDetail from "./pages/admin/students/detail";
 import EditStudent from "./pages/admin/students/edit";
 import EditSchool from "./pages/admin/schools/detail";
+import SchoolIndex from "./pages/public/schools";
+import SchoolShow from "./pages/public/schools/show";
 
 // Import guard route
 import PrivateRoute from "./components/privateRoute";
@@ -31,6 +32,8 @@ function App() {
         {/* Rute untuk layout publik */}
         <Route element={<PublicLayout />}>
           <Route index element={<Home />} />
+          <Route path="schools" element={<SchoolIndex />} />
+          <Route path="schools/show/:id" element={<SchoolShow />} />
         </Route>
 
         {/* Rute untuk halaman admin yang diproteksi */}
@@ -80,14 +83,6 @@ function App() {
           element={
             <GuestRoute>
               <Login />
-            </GuestRoute>
-          }
-        />
-        <Route
-          path="register"
-          element={
-            <GuestRoute>
-              <Register />
             </GuestRoute>
           }
         />

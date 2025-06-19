@@ -22,13 +22,13 @@ export default function Navbar() {
       {/* Navigation Links */}
       <div className="hidden gap-8 md:flex"> 
         <Link 
-          to="http://127.0.0.1:8000/" 
+          to="/" 
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
           Home
         </Link>
         <Link 
-          to="/sekolah" 
+          to="/schools" 
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
           Sekolah
