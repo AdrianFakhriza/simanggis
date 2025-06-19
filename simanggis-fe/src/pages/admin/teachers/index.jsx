@@ -13,6 +13,7 @@ export default function AdminTeacher() {
         setTeachers((prev) => prev.filter((teacher) => teacher.id !== id));
         setSuccess("Guru berhasil dihapus.");
       } catch (error) {
+        console.error(error);
         setSuccess("Gagal menghapus guru.");
       }
     }

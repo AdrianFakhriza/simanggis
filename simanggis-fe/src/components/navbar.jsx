@@ -22,12 +22,12 @@ export default function Navbar() {
       {/* Navigation Links */}
       <div className="hidden gap-8 md:flex"> 
         <Link 
-          to="http://127.0.0.1:8000/" // Menggunakan 'to' untuk Link, dan path yang sesuai
+          to="http://127.0.0.1:8000/" 
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
           Home
         </Link>
-        {/* <Link 
+        <Link 
           to="/sekolah" 
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
@@ -38,7 +38,7 @@ export default function Navbar() {
           className="font-medium text-gray-700 transition duration-300 hover:text-purple-600"
         >
           About
-        </Link> */}
+        </Link>
       </div>
 
       {/* Auth Buttons */}

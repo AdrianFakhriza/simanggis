@@ -65,26 +65,26 @@ export default function AdminLayout() {
                 <span className="ml-3">Dashboard</span>
               </Link>
             </li>
-            <li>
-              <Link to="/admin/schools" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
-                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M3 10l9-7 9 7-9 7-9-7z" />
-                  <path d="M9 21V12h6v9" />
-                </svg>
-                <span className="ml-3">Data Sekolah</span>
-              </Link>
-            </li>
-            <li>
-              <Link to="/admin/teachers" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
-                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                <span className="ml-3">Data Guru</span>
-              </Link>
-            </li>
-          </ul>
-
-          <ul className="pt-5 mt-5 space-y-2 border-t border-blue-200">
+            <ul className="pt-5 mt-5 space-y-2 border-t border-blue-200">
+              <li>
+                <Link to="/admin/schools" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+                  <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M3 10l9-7 9 7-9 7-9-7z" />
+                    <path d="M9 21V12h6v9" />
+                  </svg>
+                  <span className="ml-3">Data Sekolah</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/teachers" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+                  <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                  <span className="ml-3">Data Guru</span>
+                </Link>
+              </li>
+            </ul>
+          
             <li>
               <Link to="/admin/classes" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
