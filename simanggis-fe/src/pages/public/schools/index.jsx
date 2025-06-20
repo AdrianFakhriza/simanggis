@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // Simple chart component using Canvas API
 const SimpleChart = ({ data, labels }) => {
@@ -87,6 +89,7 @@ export default function SchoolsIndex() {
   const [filteredSchools, setFilteredSchools] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchSchools();
@@ -101,15 +104,63 @@ export default function SchoolsIndex() {
 
   const fetchSchools = async () => {
     try {
-      // Replace with your actual API endpoint
-      const response = await fetch('/api/schools');
-      const data = await response.json();
-      setSchools(data);
-      setFilteredSchools(data);
+      setLoading(true);
+      setError(null);
+      
+      // Fetch schools data from API
+      const response = await axios.get('http://127.0.0.1:8000/api/schools');
+      const schoolsData = response.data.data || response.data;
+      
+      // Process each school to get additional statistics
+      const processedSchools = await Promise.all(
+        schoolsData.map(async (school) => {
+          try {
+            // Fetch statistics for each school
+            const statsResponse = await axios.get(`http://127.0.0.1:8000/api/schools/${school.school_id}/statistics`);
+            const stats = statsResponse.data.data;
+            
+            return {
+              ...school,
+              siswaSudahMakan: stats.siswa_sudah_makan_hari_ini || 0,
+              siswaBelumMakan: (stats.total_siswa || 0) - (stats.siswa_sudah_makan_hari_ini || 0),
+              users: stats.total_guru ? Array(stats.total_guru).fill().map((_, i) => ({ role: 'guru' })) : [],
+              classes: stats.total_kelas ? Array(stats.total_kelas).fill().map((_, i) => ({ class_name: `Kelas ${i + 1}` })) : [],
+              students: stats.total_siswa ? Array(stats.total_siswa).fill().map((_, i) => ({ name: `Siswa ${i + 1}` })) : [],
+              feedback: stats.total_feedback ? Array(stats.total_feedback).fill().map((_, i) => ({ content: `Feedback ${i + 1}` })) : [],
+              mealDistributions: stats.total_distribusi ? Array(stats.total_distribusi).fill().map((_, i) => ({ id: i + 1 })) : [],
+              labelsMinggu: stats.mingguan?.labels || ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+              dataMingguSudah: stats.mingguan?.sudah?.map(val => parseInt(val)) || [0, 0, 0, 0, 0, 0, 0],
+              dataMingguBelum: stats.mingguan?.belum?.map(val => parseInt(val)) || [0, 0, 0, 0, 0, 0, 0]
+            };
+          } catch (statsError) {
+            console.error(`Error fetching stats for school ${school.school_id}:`, statsError);
+            // Return school with default values if stats fetch fails
+            return {
+              ...school,
+              siswaSudahMakan: 0,
+              siswaBelumMakan: 0,
+              users: [],
+              classes: [],
+              students: [],
+              feedback: [],
+              mealDistributions: [],
+              labelsMinggu: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+              dataMingguSudah: [0, 0, 0, 0, 0, 0, 0],
+              dataMingguBelum: [0, 0, 0, 0, 0, 0, 0]
+            };
+          }
+        })
+      );
+      
+      setSchools(processedSchools);
+      setFilteredSchools(processedSchools);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching schools:', error);
-      // Mock data for demonstration
+      setError('Gagal memuat data sekolah. Silakan coba lagi.');
+      setLoading(false);
+      
+      // Fallback to mock data if API fails
       const mockData = [
         {
           school_id: 1,
@@ -144,7 +195,6 @@ export default function SchoolsIndex() {
       ];
       setSchools(mockData);
       setFilteredSchools(mockData);
-      setLoading(false);
     }
   };
 
@@ -207,6 +257,18 @@ export default function SchoolsIndex() {
             Berikut adalah daftar sekolah beserta statistik jumlah guru, kelas, siswa, feedback, dan distribusi makan gratis.
           </p>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="max-w-md p-4 mx-auto mb-8 bg-red-100 border border-red-200 rounded-lg">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <p className="text-red-700">{error}</p>
+            </div>
+          </div>
+        )}
 
         {/* Search Section */}
         <div className="flex justify-center mb-12">
@@ -279,8 +341,8 @@ export default function SchoolsIndex() {
                 </div>
 
                 {/* Action Button */}
-                <button
-                  onClick={() => window.location.href = `/schools/${school.school_id}`}
+                <Link
+                  to={`/schools/${school.school_id}`}
                   className="block w-full py-3 font-semibold text-center text-white transition-all duration-300 transform rounded-full shadow-lg hover:scale-105"
                   style={{
                     background: 'linear-gradient(to right, #9333ea, #6366f1)',
@@ -293,7 +355,7 @@ export default function SchoolsIndex() {
                   }}
                 >
                   Lihat Detail
-                </button>
+                </Link>
               </div>
             </div>
           ))}

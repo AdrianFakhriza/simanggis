@@ -12,7 +12,7 @@ class SchoolController extends Controller
     public function index()
     {
         // Ambil semua sekolah beserta relasi statistik
-        $schools = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->get();
+        $schools = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->first();
         return view('schools.index', compact('schools'));
     }
 
