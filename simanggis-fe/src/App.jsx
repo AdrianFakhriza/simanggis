@@ -17,6 +17,7 @@ import EditStudent from "./pages/admin/students/edit";
 import EditSchool from "./pages/admin/schools/detail";
 import SchoolIndex from "./pages/public/schools";
 import SchoolShow from "./pages/public/schools/show";
+import About from "./pages/public/about";
 
 // Import guard route
 import PrivateRoute from "./components/privateRoute";
@@ -34,6 +35,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="schools" element={<SchoolIndex />} />
           <Route path="schools/:id" element={<SchoolShow />} />
+          <Route path="about" element={<About />} />
         </Route>
 
         {/* Rute untuk halaman admin yang diproteksi */}
