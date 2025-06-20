@@ -23,7 +23,7 @@ import PrivateRoute from "./components/privateRoute";
 import GuestRoute from "./components/guestRoute";
 import EditClass from "./pages/admin/classes/edit";
 import ClassDetailPage from "./pages/admin/classes/detail";
-
+import Dashboard from "./pages/admin/dashboard";
 
 function App() {
   return (
@@ -46,6 +46,8 @@ function App() {
             </PrivateRoute>
           }
         >
+          {/* Admin Route */}
+          <Route index element={<Dashboard />} />
           {/* admin/classes */}
           <Route path="classes">
             <Route index element={<AdminClasses />} />
@@ -76,7 +78,7 @@ function App() {
             <Route path="edit/:id" element={<EditTeacher />} />
           </Route>
         </Route>
-          
+
         {/* Rute login hanya untuk tamu */}
         <Route
           path="login"
