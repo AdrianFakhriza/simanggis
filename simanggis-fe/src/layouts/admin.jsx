@@ -1,11 +1,21 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Logo from '../assets/Logo_SiMANGGIS.png';
-
+import Logo from "../assets/Logo_SiMANGGIS.png";
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const confirmed = window.confirm("Yakin ingin logout?");
+    if (confirmed) {
+      localStorage.removeItem("token");
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="min-h-screen antialiased bg-gray-100 dark:bg-gray-900">
+      {/* Navbar */}
       <nav className="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
         <div className="flex flex-wrap items-center justify-between">
           <div className="flex items-center justify-start">
@@ -16,18 +26,18 @@ export default function AdminLayout() {
               className="p-2 mr-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-blue-600 hover:bg-blue-50 focus:bg-blue-100 dark:focus:bg-gray-700 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 5h14M3 10h14M3 15h14" clipRule="evenodd" />
+                <path
+                  fillRule="evenodd"
+                  d="M3 5h14M3 10h14M3 15h14"
+                  clipRule="evenodd"
+                />
               </svg>
               <span className="sr-only">Toggle Sidebar</span>
             </button>
             <Link to="/" className="flex items-center justify-between mr-4">
-              <div className="flex items-center flex-shrink-0 text-white"> 
-                      <img 
-                        src={Logo}
-                        alt="Company Logo" 
-                        className="w-auto h-12" 
-                      />
-                    </div>
+              <div className="flex items-center flex-shrink-0 text-white">
+                <img src={Logo} alt="Company Logo" className="w-auto h-12" />
+              </div>
             </Link>
           </div>
           <div className="flex items-center lg:order-2">
@@ -35,8 +45,6 @@ export default function AdminLayout() {
               type="button"
               className="flex mx-3 text-sm bg-blue-100 rounded-full dark:bg-blue-900 md:mr-0 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-600"
               id="user-menu-button"
-              aria-expanded="false"
-              data-dropdown-toggle="dropdown"
             >
               <span className="sr-only">Open user menu</span>
               <img
@@ -45,11 +53,14 @@ export default function AdminLayout() {
                 alt="user photo"
               />
             </button>
-            <span className="hidden mr-4 font-semibold text-gray-700 md:block dark:text-gray-200">Neil Sims</span>
+            <span className="hidden mr-4 font-semibold text-gray-700 md:block dark:text-gray-200">
+              Neil Sims
+            </span>
           </div>
         </div>
       </nav>
 
+      {/* Sidebar */}
       <aside
         className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-blue-300 pt-14 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidenav"
@@ -58,16 +69,23 @@ export default function AdminLayout() {
         <div className="h-full px-3 py-5 overflow-y-auto">
           <ul className="space-y-2">
             <li>
-              <Link to="/admin" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+              <Link
+                to="/admin"
+                className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
+              >
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0l-7 7-2-2" />
                 </svg>
                 <span className="ml-3">Dashboard</span>
               </Link>
             </li>
+
             <ul className="pt-5 mt-5 space-y-2 border-t border-blue-200">
               <li>
-                <Link to="/admin/schools" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+                <Link
+                  to="/admin/schools"
+                  className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
+                >
                   <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M3 10l9-7 9 7-9 7-9-7z" />
                     <path d="M9 21V12h6v9" />
@@ -76,7 +94,10 @@ export default function AdminLayout() {
                 </Link>
               </li>
               <li>
-                <Link to="/admin/teachers" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+                <Link
+                  to="/admin/teachers"
+                  className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
+                >
                   <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
@@ -84,30 +105,42 @@ export default function AdminLayout() {
                 </Link>
               </li>
             </ul>
-          
+
             <li>
-              <Link to="/admin/classes" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+              <Link
+                to="/admin/classes"
+                className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
+              >
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M16 14c2.21 0 4 1.79 4 4v1H4v-1c0-2.21 1.79-4 4-4h8zM12 12a4 4 0 100-8 4 4 0 000 8z" />
                 </svg>
                 <span className="ml-3">Data Kelas</span>
               </Link>
             </li>
+
             <li>
-              <Link to="/admin/students" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
+              <Link
+                to="/admin/students"
+                className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
+              >
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M8 16v1a4 4 0 004 4 4 4 0 004-4v-1M12 12a4 4 0 100-8 4 4 0 000 8z" />
                 </svg>
                 <span className="ml-3">Data Murid</span>
               </Link>
             </li>
-            <li>
-              <Link to="/help" className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700">
-                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M12 8v4m0 4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z" />
+
+            {/* Logout button */}
+            <li className="pt-5 border-t border-blue-200">
+              <button
+                onClick={handleLogout}
+                className="flex items-center w-full p-2 text-red-600 transition-colors rounded-lg hover:bg-red-50"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M17 16l4-4m0 0l-4-4m4 4H7" />
                 </svg>
-                <span className="ml-3">Help</span>
-              </Link>
+                Keluar
+              </button>
             </li>
           </ul>
         </div>

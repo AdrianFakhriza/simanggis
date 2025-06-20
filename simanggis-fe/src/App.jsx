@@ -94,12 +94,17 @@ function App() {
           }
         />
         <Route
-          path="register"
-          element={<Register />}
-        />
+  path="register"
+  element={
+    <GuestRoute>
+      <Register />
+    </GuestRoute>
+  }
+/>
       </Routes>
     </BrowserRouter>
   );
+
 }
 
 export default App;

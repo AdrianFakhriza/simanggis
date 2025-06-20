@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\MealDistributionController;
 use App\Http\Controllers\Api\SchoolController;
 use App\Http\Controllers\Api\StudentController;
 use App\Http\Controllers\Api\TeacherController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +19,10 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/statistics', [StatisticsController::class,'index']);
-
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+// Route::post('register', [RegisteredUserController::class, 'store']);
+
 
 Route::get('/schoolsPublic', [SchoolController::class, 'publicIndex']);
 Route::get('/schoolsPublic/{id}', [SchoolController::class, 'publicShow']);
