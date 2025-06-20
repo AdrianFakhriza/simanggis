@@ -22,3 +22,8 @@ export const updateSchool = async (schoolData) => {
     },
   });
 };
+
+export const getSchoolsPublic = async () => {
+  const { data } = await API.get("/schoolsPublic");
+  return data;
+};

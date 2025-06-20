@@ -21,6 +21,9 @@ Route::get('/statistics', [StatisticsController::class,'index']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/schoolsPublic', [SchoolController::class, 'publicIndex']);
+Route::get('/schoolsPublic/{id}', [SchoolController::class, 'publicShow']);
+
 Route::middleware(['auth:api'])->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);

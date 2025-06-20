@@ -9,22 +9,24 @@ use App\Models\MealDistribution;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
+        $schoolId = Auth::user()->school_id;
         $now = Carbon::now();
-        $totalSekolah = School::count();
-        $totalGuru = User::where('role', 'guru')->count();
-        $totalSiswa = Student::count();
-        $totalDistribusi = MealDistribution::count();
+        $totalSekolah = 1; // Karena hanya 1 sekolah yang diambil
+        $totalGuru = User::where('role', 'guru')->where('school_id', $schoolId)->count();
+        $totalSiswa = Student::where('school_id', $schoolId)->count();
+        $totalDistribusi = MealDistribution::where('school_id', $schoolId)->count();
 
-        // Statistik siswa sudah dapat makan gratis (hari ini)
-        $siswaSudahMakan = MealDistribution::whereDate('meal_date', now()->toDateString())->where('status', 'received')->count();
+        $siswaSudahMakan = MealDistribution::where('school_id', $schoolId)
+            ->whereDate('meal_date', now()->toDateString())
+            ->where('status', 'received')
+            ->count();
 
-        // DATA STATISTIK LINE CHART START
-        // Statistik minggu ini (7 hari terakhir termasuk hari ini)
         $startOfWeek = $now->copy()->subDays(6)->startOfDay();
         $endOfWeek = $now->copy()->endOfDay();
 
@@ -32,6 +34,7 @@ class AdminController extends Controller
             ->selectRaw('DATE(meal_date) as tanggal,
                          SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah,
                          SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+            ->where('school_id', $schoolId)
             ->whereBetween('meal_date', [$startOfWeek, $endOfWeek])
             ->groupBy('tanggal')
             ->orderBy('tanggal')
@@ -43,7 +46,7 @@ class AdminController extends Controller
         $dataMingguSudah = $statistikMinggu->pluck('sudah')->toArray();
         $dataMingguBelum = $statistikMinggu->pluck('belum')->toArray();
 
-        // Bulan ini (1 bulan terakhir berdasarkan tanggal)
+        // Bulan ini
         $startOfMonth = $now->copy()->subDays(29)->startOfDay();
         $endOfMonth = $now->copy()->endOfDay();
 
@@ -51,6 +54,7 @@ class AdminController extends Controller
             ->selectRaw('DATE(meal_date) as tanggal,
                  SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah,
                  SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+            ->where('school_id', $schoolId)
             ->whereBetween('meal_date', [$startOfMonth, $endOfMonth])
             ->groupBy('tanggal')
             ->orderBy('tanggal')
@@ -63,7 +67,7 @@ class AdminController extends Controller
         $dataBulanSudah = $statistikBulan->pluck('sudah')->toArray();
         $dataBulanBelum = $statistikBulan->pluck('belum')->toArray();
 
-        // Statistik tahun ini (grouped by bulan)
+        // Tahun ini
         $startOfYear = $now->copy()->startOfYear();
         $endOfYear = $now->copy()->endOfDay();
 
@@ -71,6 +75,7 @@ class AdminController extends Controller
             ->selectRaw('MONTH(meal_date) as bulan,
                          SUM(CASE WHEN status = "received" THEN 1 ELSE 0 END) as sudah,
                          SUM(CASE WHEN status = "not_received" THEN 1 ELSE 0 END) as belum')
+            ->where('school_id', $schoolId)
             ->whereBetween('meal_date', [$startOfYear, $endOfYear])
             ->groupBy('bulan')
             ->orderBy('bulan')
@@ -84,7 +89,6 @@ class AdminController extends Controller
 
         $dataTahunSudah = $statistikTahun->pluck('sudah')->toArray();
         $dataTahunBelum = $statistikTahun->pluck('belum')->toArray();
-        // DATA STATISTIK LINE CHART END
 
         return view('admin.dashboard', compact(
             'totalSekolah',

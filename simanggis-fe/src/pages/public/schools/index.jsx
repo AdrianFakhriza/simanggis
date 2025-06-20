@@ -97,7 +97,7 @@ export default function SchoolsIndex() {
 
   useEffect(() => {
     const filtered = schools.filter(school =>
-      school.school_name.toLowerCase().includes(searchTerm.toLowerCase())
+      (school.school_name || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredSchools(filtered);
   }, [searchTerm, schools]);
@@ -106,101 +106,24 @@ export default function SchoolsIndex() {
     try {
       setLoading(true);
       setError(null);
-      
-      // Fetch schools data from API
-      const response = await axios.get('http://127.0.0.1:8000/api/schools');
+
+      // Ambil data sekolah dari API
+      const response = await axios.get('http://127.0.0.1:8000/api/schoolsPublic');
+      // Jika response.data.data adalah array sekolah
       const schoolsData = response.data.data || response.data;
-      
-      // Process each school to get additional statistics
-      const processedSchools = await Promise.all(
-        schoolsData.map(async (school) => {
-          try {
-            // Fetch statistics for each school
-            const statsResponse = await axios.get(`http://127.0.0.1:8000/api/schools/${school.school_id}/statistics`);
-            const stats = statsResponse.data.data;
-            
-            return {
-              ...school,
-              siswaSudahMakan: stats.siswa_sudah_makan_hari_ini || 0,
-              siswaBelumMakan: (stats.total_siswa || 0) - (stats.siswa_sudah_makan_hari_ini || 0),
-              users: stats.total_guru ? Array(stats.total_guru).fill().map((_, i) => ({ role: 'guru' })) : [],
-              classes: stats.total_kelas ? Array(stats.total_kelas).fill().map((_, i) => ({ class_name: `Kelas ${i + 1}` })) : [],
-              students: stats.total_siswa ? Array(stats.total_siswa).fill().map((_, i) => ({ name: `Siswa ${i + 1}` })) : [],
-              feedback: stats.total_feedback ? Array(stats.total_feedback).fill().map((_, i) => ({ content: `Feedback ${i + 1}` })) : [],
-              mealDistributions: stats.total_distribusi ? Array(stats.total_distribusi).fill().map((_, i) => ({ id: i + 1 })) : [],
-              labelsMinggu: stats.mingguan?.labels || ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-              dataMingguSudah: stats.mingguan?.sudah?.map(val => parseInt(val)) || [0, 0, 0, 0, 0, 0, 0],
-              dataMingguBelum: stats.mingguan?.belum?.map(val => parseInt(val)) || [0, 0, 0, 0, 0, 0, 0]
-            };
-          } catch (statsError) {
-            console.error(`Error fetching stats for school ${school.school_id}:`, statsError);
-            // Return school with default values if stats fetch fails
-            return {
-              ...school,
-              siswaSudahMakan: 0,
-              siswaBelumMakan: 0,
-              users: [],
-              classes: [],
-              students: [],
-              feedback: [],
-              mealDistributions: [],
-              labelsMinggu: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-              dataMingguSudah: [0, 0, 0, 0, 0, 0, 0],
-              dataMingguBelum: [0, 0, 0, 0, 0, 0, 0]
-            };
-          }
-        })
-      );
-      
-      setSchools(processedSchools);
-      setFilteredSchools(processedSchools);
+
+      setSchools(schoolsData);
+      setFilteredSchools(schoolsData);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching schools:', error);
       setError('Gagal memuat data sekolah. Silakan coba lagi.');
       setLoading(false);
-      
-      // Fallback to mock data if API fails
-      const mockData = [
-        {
-          school_id: 1,
-          school_name: 'SD Negeri 1 Jakarta',
-          address: 'Jl. Merdeka No. 123, Jakarta Pusat',
-          siswaSudahMakan: 145,
-          siswaBelumMakan: 23,
-          users: Array(12).fill().map((_, i) => ({ role: 'guru' })),
-          classes: Array(6).fill().map((_, i) => ({ class_name: `Kelas ${i + 1}` })),
-          students: Array(168).fill().map((_, i) => ({ name: `Siswa ${i + 1}` })),
-          feedback: Array(8).fill().map((_, i) => ({ content: `Feedback ${i + 1}` })),
-          mealDistributions: Array(15).fill().map((_, i) => ({ id: i + 1 })),
-          labelsMinggu: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-          dataMingguSudah: [120, 135, 140, 125, 145, 110, 95],
-          dataMingguBelum: [48, 33, 28, 43, 23, 58, 73]
-        },
-        {
-          school_id: 2,
-          school_name: 'SD Negeri 2 Jakarta',
-          address: 'Jl. Sudirman No. 456, Jakarta Selatan',
-          siswaSudahMakan: 98,
-          siswaBelumMakan: 42,
-          users: Array(8).fill().map((_, i) => ({ role: 'guru' })),
-          classes: Array(4).fill().map((_, i) => ({ class_name: `Kelas ${i + 1}` })),
-          students: Array(140).fill().map((_, i) => ({ name: `Siswa ${i + 1}` })),
-          feedback: Array(5).fill().map((_, i) => ({ content: `Feedback ${i + 1}` })),
-          mealDistributions: Array(12).fill().map((_, i) => ({ id: i + 1 })),
-          labelsMinggu: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-          dataMingguSudah: [85, 92, 98, 88, 95, 75, 65],
-          dataMingguBelum: [55, 48, 42, 52, 45, 65, 75]
-        }
-      ];
-      setSchools(mockData);
-      setFilteredSchools(mockData);
     }
   };
 
   const getChartData = (school) => ({
-    sudah: school.dataMingguSudah || [0, 0, 0, 0, 0, 0, 0],
-    belum: school.dataMingguBelum || [0, 0, 0, 0, 0, 0, 0],
+    sudah: (school.dataMingguSudah || []).map(Number),
+    belum: (school.dataMingguBelum || []).map(Number),
     labels: school.labelsMinggu || ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min']
   });
 
@@ -357,7 +280,7 @@ export default function SchoolsIndex() {
                   Lihat Detail
                 </Link>
               </div>
-            </div>
+            </div>  
           ))}
         </div>
 

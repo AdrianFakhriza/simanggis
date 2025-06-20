@@ -33,7 +33,7 @@ function App() {
         <Route element={<PublicLayout />}>
           <Route index element={<Home />} />
           <Route path="schools" element={<SchoolIndex />} />
-          <Route path="schools/show/:id" element={<SchoolShow />} />
+          <Route path="schools/:id" element={<SchoolShow />} />
         </Route>
 
         {/* Rute untuk halaman admin yang diproteksi */}

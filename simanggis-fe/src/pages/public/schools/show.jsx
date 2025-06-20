@@ -3,25 +3,25 @@ import React, { useState, useEffect } from 'react';
 // Simple chart component using Canvas API
 const SimpleChart = ({ data, labels }) => {
   const canvasRef = React.useRef(null);
-  
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    
+
     const ctx = canvas.getContext('2d');
     const width = canvas.width;
     const height = canvas.height;
-    
+
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
-    
+
     // Chart styling
     const padding = 40;
     const chartWidth = width - padding * 2;
     const chartHeight = height - padding * 2;
-    
+
     const maxValue = Math.max(...data.sudah, ...data.belum, 1);
-    
+
     // Draw grid
     ctx.strokeStyle = '#f3f4f6';
     ctx.lineWidth = 1;
@@ -32,26 +32,26 @@ const SimpleChart = ({ data, labels }) => {
       ctx.lineTo(width - padding, y);
       ctx.stroke();
     }
-    
+
     // Draw lines
     const drawLine = (values, color, fill = false) => {
       if (values.length === 0) return;
-      
+
       ctx.strokeStyle = color;
       ctx.lineWidth = 3;
       ctx.beginPath();
-      
+
       values.forEach((value, index) => {
         const x = padding + (chartWidth / (values.length - 1)) * index;
         const y = padding + chartHeight - (value / maxValue) * chartHeight;
-        
+
         if (index === 0) {
           ctx.moveTo(x, y);
         } else {
           ctx.lineTo(x, y);
         }
       });
-      
+
       if (fill) {
         ctx.lineTo(padding + chartWidth, padding + chartHeight);
         ctx.lineTo(padding, padding + chartHeight);
@@ -61,9 +61,9 @@ const SimpleChart = ({ data, labels }) => {
         ctx.fill();
         ctx.globalAlpha = 1;
       }
-      
+
       ctx.stroke();
-      
+
       // Draw points
       ctx.fillStyle = color;
       values.forEach((value, index) => {
@@ -74,11 +74,11 @@ const SimpleChart = ({ data, labels }) => {
         ctx.fill();
       });
     };
-    
+
     // Draw data
     drawLine(data.sudah, '#9333ea', true);
     drawLine(data.belum, '#ec4899', true);
-    
+
     // Draw labels
     ctx.fillStyle = '#6b7280';
     ctx.font = '12px sans-serif';
@@ -87,9 +87,9 @@ const SimpleChart = ({ data, labels }) => {
       const x = padding + (chartWidth / (labels.length - 1)) * index;
       ctx.fillText(label, x, height - 10);
     });
-    
+
   }, [data, labels]);
-  
+
   return <canvas ref={canvasRef} width={600} height={300} className="w-full h-auto" />;
 };
 
@@ -100,65 +100,46 @@ export default function SchoolShow({ schoolId = 1 }) {
 
   useEffect(() => {
     fetchSchool();
+    // eslint-disable-next-line
   }, [schoolId]);
 
   const fetchSchool = async () => {
     try {
-      // Replace with your actual API endpoint
-      const response = await fetch(`/api/schools/${schoolId}`);
-      const data = await response.json();
-      setSchool(data);
+      const response = await fetch(`/api/schoolsPublic/${schoolId}`);
+      const json = await response.json();
+      setSchool(json.data); // <-- ambil dari data
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching school:', error);
-      // Mock data for demonstration
-      const mockData = {
-        school_id: schoolId,
-        school_name: 'SD Negeri 1 Jakarta',
-        address: 'Jl. Merdeka No. 123, Jakarta Pusat',
-        siswaSudahMakan: 145,
-        siswaBelumMakan: 23,
-        users: Array(12).fill().map((_, i) => ({ 
-          name: `Guru ${i + 1}`, 
-          email: `guru${i + 1}@school.edu`,
-          role: 'guru' 
-        })),
-        classes: Array(6).fill().map((_, i) => ({ 
-          class_name: `Kelas ${i + 1}` 
-        })),
-        students: Array(168).fill().map((_, i) => ({ 
-          name: `Siswa ${i + 1}` 
-        })),
-        feedback: Array(8).fill().map((_, i) => ({ 
-          content: `Feedback dari orang tua siswa ${i + 1}. Makanan sudah baik dan bergizi.` 
-        })),
-        mealDistributions: Array(15).fill().map((_, i) => ({ id: i + 1 })),
-        chartData: {
-          minggu: {
-            labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-            sudah: [120, 135, 140, 125, 145, 110, 95],
-            belum: [48, 33, 28, 43, 23, 58, 73]
-          },
-          bulan: {
-            labels: ['01 Jun', '02 Jun', '03 Jun', '04 Jun', '05 Jun', '06 Jun', '07 Jun'],
-            sudah: [130, 125, 140, 135, 145, 120, 110],
-            belum: [38, 43, 28, 33, 23, 48, 58]
-          },
-          tahun: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-            sudah: [100, 110, 125, 130, 135, 145, 140, 138, 142, 150, 148, 155],
-            belum: [68, 58, 43, 38, 33, 23, 28, 30, 26, 18, 20, 13]
-          }
-        }
-      };
-      setSchool(mockData);
+      setSchool(null);
       setLoading(false);
     }
   };
 
+  // Ambil data chart sesuai filter
   const getChartData = () => {
-    if (!school?.chartData) return { sudah: [], belum: [], labels: [] };
-    return school.chartData[chartFilter];
+    if (!school) return { sudah: [], belum: [], labels: [] };
+    if (chartFilter === 'minggu') {
+      return {
+        sudah: (school.dataMingguSudah || []).map(Number),
+        belum: (school.dataMingguBelum || []).map(Number),
+        labels: school.labelsMinggu || [],
+      };
+    }
+    if (chartFilter === 'bulan') {
+      return {
+        sudah: (school.dataBulanSudah || []).map(Number),
+        belum: (school.dataBulanBelum || []).map(Number),
+        labels: school.labelsBulan || [],
+      };
+    }
+    if (chartFilter === 'tahun') {
+      return {
+        sudah: (school.dataTahunSudah || []).map(Number),
+        belum: (school.dataTahunBelum || []).map(Number),
+        labels: school.labelsTahun || [],
+      };
+    }
+    return { sudah: [], belum: [], labels: [] };
   };
 
   if (loading) {
@@ -259,7 +240,11 @@ export default function SchoolShow({ schoolId = 1 }) {
                 <span className="block text-sm text-gray-500">Belum Makan</span>
               </div>
               <div className="text-center">
-                <span className="text-4xl font-bold text-indigo-600">{((school.siswaSudahMakan / (school.siswaSudahMakan + school.siswaBelumMakan)) * 100).toFixed(1)}%</span>
+                <span className="text-4xl font-bold text-indigo-600">
+                  {((school.siswaSudahMakan + school.siswaBelumMakan) > 0
+                    ? ((school.siswaSudahMakan / (school.siswaSudahMakan + school.siswaBelumMakan)) * 100).toFixed(1)
+                    : 0)}%
+                </span>
                 <span className="block text-sm text-gray-500">Persentase</span>
               </div>
             </div>
@@ -279,7 +264,7 @@ export default function SchoolShow({ schoolId = 1 }) {
                 💬 Feedback: {school.feedback?.length || 0}
               </span>
               <span className="px-4 py-2 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full">
-                🍽️ Distribusi: {school.mealDistributions?.length || 0}
+                🍽️ Distribusi: {school.meal_distributions?.length || 0}
               </span>
             </div>
 
