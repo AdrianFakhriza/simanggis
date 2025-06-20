@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
     username: "",
@@ -28,8 +30,18 @@ export default function Register() {
       });
       const data = await res.json();
       if (res.ok) {
-        setSuccess("Registrasi berhasil! Silakan login.");
-        setForm({ name: "", username: "", email: "", password: "", password_confirmation: "", school_name: "" });
+        localStorage.setItem("token", data.access_token);
+        
+        // Redirect ke schools atau halaman lain
+        navigate("/admin/schools", { replace: true });
+        setForm({ 
+          name: "", 
+          username: "", 
+          email: "", 
+          password: "", 
+          password_confirmation: "", 
+          school_name: "" 
+        });
       } else if (data.errors) {
         // Tampilkan error validasi field spesifik
         const errorList = Object.entries(data.errors).map(([field, messages]) => `${field}: ${messages.join(", ")}`);

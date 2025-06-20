@@ -22,7 +22,8 @@ export default function Login() {
       const data = await res.json();
       if (res.ok) {
         localStorage.setItem("token", data.access_token);
-        // Redirect ke dashboard atau halaman lain
+        
+        // Redirect ke schools atau halaman lain
         navigate("/admin/schools", { replace: true });;
       } else {
         setError(data.error || "Login gagal");
