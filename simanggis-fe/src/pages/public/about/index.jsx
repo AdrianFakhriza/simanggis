@@ -1,38 +1,34 @@
 import React from 'react';
 
 export default function About() {
-  const teamMembers = [
-    {
-      name: "Ahmad Rizki",
-      role: "Lead Developer",
-      description: "Fullstack Developer dengan pengalaman 5+ tahun dalam pengembangan sistem monitoring",
-      avatar: "AR",
-      color: "bg-purple-500"
-    },
-    {
-      name: "Sari Dewi",
-      role: "UI/UX Designer",
-      description: "Desainer berpengalaman yang fokus pada user experience dan interface yang intuitif",
-      avatar: "SD",
-      color: "bg-pink-500"
-    },
-    {
-      name: "Budi Santoso",
-      role: "Backend Developer",
-      description: "Spesialis dalam pengembangan API dan database untuk sistem skala besar",
-      avatar: "BS",
-      color: "bg-indigo-500"
-    },
-    {
-      name: "Maya Putri",
-      role: "Data Analyst",
-      description: "Ahli analisis data dengan fokus pada monitoring dan reporting sistem pendidikan",
-      avatar: "MP",
-      color: "bg-purple-600"
-    }
-  ];
+    const teamMembers = [
+        {
+        name: "Adib Muhammad Zain",
+        role: "Fullstack Developer",
+        description: "Fullstack Developer dengan pengalaman 5+ tahun dalam pengembangan sistem monitoring",
+        img: "simanggis-fe\src\assets\Logo_SiMANGGIS.png"
+        },
+        {
+        name: "Sari Dewi",
+        role: "UI/UX Designer",
+        description: "Desainer berpengalaman yang fokus pada user experience dan interface yang intuitif",
+        img: "/images/team/sari.jpg"
+        },
+        {
+        name: "Budi Santoso",
+        role: "Backend Developer",
+        description: "Spesialis dalam pengembangan API dan database untuk sistem skala besar",
+        img: "/images/team/budi.jpg"
+        },
+        {
+        name: "Maya Putri",
+        role: "Data Analyst",
+        description: "Ahli analisis data dengan fokus pada monitoring dan reporting sistem pendidikan",
+        img: "/images/team/maya.jpg"
+        }
+    ];
 
-  return (
+   return (
     <div 
       className="relative min-h-screen px-4 py-16"
       style={{
@@ -64,6 +60,39 @@ export default function About() {
               />
             </svg>
           </div>
+          
+          {/* Team Grid */}
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                {teamMembers.map((member, index) => (
+                <div 
+                    key={index}
+                    className="p-6 transition-all duration-300 border border-purple-100 shadow-lg rounded-2xl bg-white/70 backdrop-blur-sm hover:shadow-xl hover:scale-105"
+                >
+                    <div className="mb-4 text-center">
+                    <img
+                        src={member.img}
+                        alt={member.name}
+                        className="object-cover w-20 h-20 mx-auto mb-4 rounded-full"
+                    />
+                    <h3 className="mb-1 text-xl font-bold text-gray-800">{member.name}</h3>
+                    <p 
+                        className="mb-3 text-sm font-medium"
+                        style={{
+                        background: 'linear-gradient(to right, #9333ea, #ec4899, #6366f1)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text'
+                        }}
+                    >
+                        {member.role}
+                    </p>
+                    <p className="text-sm leading-relaxed text-gray-600">
+                        {member.description}
+                    </p>
+                    </div>
+                </div>
+                ))}
+            </div>
 
           <h1 className="mb-6 text-4xl font-bold leading-tight text-gray-800 md:text-5xl lg:text-6xl">
             Tentang{' '}

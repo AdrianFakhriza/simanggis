@@ -12,6 +12,7 @@ import AdminTeacher from "./pages/admin/teachers";
 import CreateTeacher from "./pages/admin/teachers/create";
 import EditTeacher from "./pages/admin/teachers/edit";
 import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
 import StudentDetail from "./pages/admin/students/detail";
 import EditStudent from "./pages/admin/students/edit";
 import EditSchool from "./pages/admin/schools/detail";
@@ -19,12 +20,14 @@ import SchoolIndex from "./pages/public/schools";
 import SchoolShow from "./pages/public/schools/show";
 import About from "./pages/public/about";
 
+
 // Import guard route
 import PrivateRoute from "./components/privateRoute";
 import GuestRoute from "./components/guestRoute";
 import EditClass from "./pages/admin/classes/edit";
 import ClassDetailPage from "./pages/admin/classes/detail";
 import Dashboard from "./pages/admin/dashboard";
+
 
 function App() {
   return (
@@ -89,6 +92,10 @@ function App() {
               <Login />
             </GuestRoute>
           }
+        />
+        <Route
+          path="register"
+          element={<Register />}
         />
       </Routes>
     </BrowserRouter>
