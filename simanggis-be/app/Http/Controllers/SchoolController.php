@@ -11,9 +11,9 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        // Ambil semua sekolah beserta relasi statistik
-        $schools = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->first();
-        return view('schools.index', compact('schools'));
+        // Ambil sekolah milik user yang sedang login beserta relasi
+        $school = Auth::user()->school;
+        return view('schools.index', compact('school'));
     }
 
     public function showEditForm()
@@ -86,7 +86,7 @@ class SchoolController extends Controller
     // Halaman publik: daftar semua sekolah dan statistik
     public function publicIndex()
     {
-        $schools = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->get();
+        $schools = \App\Models\School::with(['users', 'classes', 'students', 'feedback', 'mealDistributions'])->whereNull('deleted_at')->get();
         foreach ($schools as $school) {
             // Statistik siswa sudah/belum makan per sekolah (hari ini)
             $school->siswaSudahMakan = $school->mealDistributions()->whereDate('meal_date', now()->toDateString())->where('status', 'received')->count();

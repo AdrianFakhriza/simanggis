@@ -30,7 +30,7 @@ export default function Register() {
       });
       const data = await res.json();
       if (res.ok) {
-        localStorage.setItem("token", data.access_token);
+        setSuccess("Registrasi berhasil! Silakan login.");
         
         // Redirect ke schools atau halaman lain
         navigate("/admin/schools", { replace: true });

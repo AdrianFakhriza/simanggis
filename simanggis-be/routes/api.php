@@ -19,10 +19,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/statistics', [StatisticsController::class,'index']);
-Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-// Route::post('register', [RegisteredUserController::class, 'store']);
-
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/schoolsPublic', [SchoolController::class, 'publicIndex']);
 Route::get('/schoolsPublic/{id}', [SchoolController::class, 'publicShow']);

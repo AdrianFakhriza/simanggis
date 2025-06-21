@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-// Simple chart component using Canvas API
+// Komponen SimpleChart yang diperbaiki
 const SimpleChart = ({ data, labels }) => {
   const canvasRef = React.useRef(null);
 
@@ -9,6 +10,15 @@ const SimpleChart = ({ data, labels }) => {
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
+    
+    // Responsive canvas sizing
+    const container = canvas.parentElement;
+    const containerWidth = container?.offsetWidth || 600;
+    const containerHeight = Math.min(containerWidth * 0.4, 250); // Reduced height
+    
+    canvas.width = containerWidth;
+    canvas.height = containerHeight;
+
     const width = canvas.width;
     const height = canvas.height;
 
@@ -42,7 +52,7 @@ const SimpleChart = ({ data, labels }) => {
       ctx.beginPath();
 
       values.forEach((value, index) => {
-        const x = padding + (chartWidth / (values.length - 1)) * index;
+        const x = padding + (chartWidth / Math.max(values.length - 1, 1)) * index;
         const y = padding + chartHeight - (value / maxValue) * chartHeight;
 
         if (index === 0) {
@@ -67,7 +77,7 @@ const SimpleChart = ({ data, labels }) => {
       // Draw points
       ctx.fillStyle = color;
       values.forEach((value, index) => {
-        const x = padding + (chartWidth / (values.length - 1)) * index;
+        const x = padding + (chartWidth / Math.max(values.length - 1, 1)) * index;
         const y = padding + chartHeight - (value / maxValue) * chartHeight;
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, 2 * Math.PI);
@@ -84,36 +94,44 @@ const SimpleChart = ({ data, labels }) => {
     ctx.font = '12px sans-serif';
     ctx.textAlign = 'center';
     labels.forEach((label, index) => {
-      const x = padding + (chartWidth / (labels.length - 1)) * index;
+      const x = padding + (chartWidth / Math.max(labels.length - 1, 1)) * index;
       ctx.fillText(label, x, height - 10);
     });
 
   }, [data, labels]);
 
-  return <canvas ref={canvasRef} width={600} height={300} className="w-full h-auto" />;
+  return <canvas ref={canvasRef} className="w-full h-auto" style={{ maxHeight: '250px' }} />;
 };
 
-export default function SchoolShow({ schoolId = 1 }) {
+// Komponen utama yang diperbaiki
+export default function SchoolShow() {
+  const { id } = useParams();
   const [school, setSchool] = useState(null);
   const [loading, setLoading] = useState(true);
   const [chartFilter, setChartFilter] = useState('minggu');
 
   useEffect(() => {
-    fetchSchool();
-    // eslint-disable-next-line
-  }, [schoolId]);
+    const fetchSchool = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/schoolsPublic/${id}`);
+        
+        if (!response.ok) {
+          throw new Error('Data sekolah tidak ditemukan');
+        }
 
-  const fetchSchool = async () => {
-    try {
-      const response = await fetch(`/api/schoolsPublic/${schoolId}`);
-      const json = await response.json();
-      setSchool(json.data); // <-- ambil dari data
-      setLoading(false);
-    } catch (error) {
-      setSchool(null);
-      setLoading(false);
-    }
-  };
+        const json = await response.json();
+        setSchool(json.data);
+      } catch (error) {
+        console.error("Gagal mengambil data sekolah:", error);
+        setSchool(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSchool();
+  }, [id]);
 
   // Ambil data chart sesuai filter
   const getChartData = () => {
@@ -190,14 +208,14 @@ export default function SchoolShow({ schoolId = 1 }) {
 
   return (
     <div 
-      className="min-h-screen px-4 py-16"
+      className="min-h-screen px-4 py-8 md:py-16"
       style={{
         background: 'linear-gradient(135deg, #f3e8ff 0%, #fdf2f8 50%, #e0e7ff 100%)'
       }}
     >
       <div className="max-w-6xl mx-auto">
         {/* Back Button */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <button
             onClick={() => window.history.back()}
             className="inline-flex items-center gap-2 px-4 py-2 text-purple-600 transition-all duration-300 border border-purple-200 rounded-full bg-white/80 backdrop-blur-sm hover:shadow-lg hover:bg-white"
@@ -210,66 +228,64 @@ export default function SchoolShow({ schoolId = 1 }) {
         </div>
 
         {/* Header Section */}
-        <div className="mb-12 text-center">
-          <div className="inline-flex items-center gap-2 px-6 py-3 mb-8 transition-all duration-300 border border-purple-200 rounded-full shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl">
-            <span className="font-medium text-purple-600">Detail Sekolah</span>
+        <div className="mb-8 text-center md:mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 transition-all duration-300 border border-purple-200 rounded-full shadow-lg md:px-6 md:py-3 md:mb-8 bg-white/80 backdrop-blur-sm hover:shadow-xl">
+            <span className="text-sm font-medium text-purple-600 md:text-base">Detail Sekolah</span>
             <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
           
-          <h1 className="mb-4 text-4xl font-bold leading-tight text-gray-800 md:text-5xl">
+          <h1 className="mb-4 text-2xl font-bold leading-tight text-gray-800 md:text-4xl lg:text-5xl">
             {school.school_name}
           </h1>
           
-          <p className="max-w-2xl mx-auto mb-8 text-lg leading-relaxed text-gray-600">
+          <p className="max-w-2xl mx-auto mb-6 text-base leading-relaxed text-gray-600 md:mb-8 md:text-lg">
             {school.address || '-'}
           </p>
         </div>
 
         {/* Statistics Overview */}
-        <div className="mb-12 overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl">
-          <div className="p-8 bg-gradient-to-br from-purple-50 to-pink-50">
-            <div className="flex flex-wrap items-center justify-center gap-8 mb-6">
+        <div className="mb-8 overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg md:mb-12 bg-white/80 backdrop-blur-sm rounded-2xl">
+          <div className="p-4 md:p-8 bg-gradient-to-br from-purple-50 to-pink-50">
+            {/* Main Statistics */}
+            <div className="flex flex-wrap items-center justify-center gap-6 mb-6 md:gap-8">
               <div className="text-center">
-                <span className="text-4xl font-bold text-purple-600">{school.siswaSudahMakan || 0}</span>
-                <span className="block text-sm text-gray-500">Sudah Makan</span>
+                <span className="text-2xl font-bold text-purple-600 md:text-4xl">{school.siswaSudahMakan || 0}</span>
+                <span className="block text-xs text-gray-500 md:text-sm">Sudah Makan</span>
               </div>
               <div className="text-center">
-                <span className="text-4xl font-bold text-pink-600">{school.siswaBelumMakan || 0}</span>
-                <span className="block text-sm text-gray-500">Belum Makan</span>
+                <span className="text-2xl font-bold text-pink-600 md:text-4xl">{school.siswaBelumMakan || 0}</span>
+                <span className="block text-xs text-gray-500 md:text-sm">Belum Makan</span>
               </div>
               <div className="text-center">
-                <span className="text-4xl font-bold text-indigo-600">
+                <span className="text-2xl font-bold text-indigo-600 md:text-4xl">
                   {((school.siswaSudahMakan + school.siswaBelumMakan) > 0
                     ? ((school.siswaSudahMakan / (school.siswaSudahMakan + school.siswaBelumMakan)) * 100).toFixed(1)
                     : 0)}%
                 </span>
-                <span className="block text-sm text-gray-500">Persentase</span>
+                <span className="block text-xs text-gray-500 md:text-sm">Persentase</span>
               </div>
             </div>
 
             {/* Stats Tags */}
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
-              <span className="px-4 py-2 text-sm font-medium text-purple-800 bg-purple-100 rounded-full">
+            <div className="flex flex-wrap justify-center gap-2 mb-6 md:gap-3 md:mb-8">
+              <span className="px-3 py-1 text-xs font-medium text-purple-800 bg-purple-100 rounded-full md:px-4 md:py-2 md:text-sm">
                 👨‍🏫 Guru: {school.users?.filter(u => u.role === 'guru').length || 0}
               </span>
-              <span className="px-4 py-2 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
+              <span className="px-3 py-1 text-xs font-medium text-blue-800 bg-blue-100 rounded-full md:px-4 md:py-2 md:text-sm">
                 🏫 Kelas: {school.classes?.length || 0}
               </span>
-              <span className="px-4 py-2 text-sm font-medium text-green-800 bg-green-100 rounded-full">
+              <span className="px-3 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full md:px-4 md:py-2 md:text-sm">
                 👨‍🎓 Siswa: {school.students?.length || 0}
               </span>
-              <span className="px-4 py-2 text-sm font-medium text-pink-800 bg-pink-100 rounded-full">
-                💬 Feedback: {school.feedback?.length || 0}
-              </span>
-              <span className="px-4 py-2 text-sm font-medium text-indigo-800 bg-indigo-100 rounded-full">
+              <span className="px-3 py-1 text-xs font-medium text-indigo-800 bg-indigo-100 rounded-full md:px-4 md:py-2 md:text-sm">
                 🍽️ Distribusi: {school.meal_distributions?.length || 0}
               </span>
             </div>
 
             {/* Chart Filter */}
-            <div className="flex justify-center mb-6">
+            <div className="flex justify-center mb-4 md:mb-6">
               <div className="inline-flex p-1 border border-purple-200 rounded-full bg-white/60 backdrop-blur-sm">
                 {[
                   { value: 'minggu', label: 'Mingguan' },
@@ -279,7 +295,7 @@ export default function SchoolShow({ schoolId = 1 }) {
                   <button
                     key={option.value}
                     onClick={() => setChartFilter(option.value)}
-                    className={`px-4 py-2 text-sm font-medium rounded-full transition-all duration-300 ${
+                    className={`px-3 md:px-4 py-1 md:py-2 text-xs md:text-sm font-medium rounded-full transition-all duration-300 ${
                       chartFilter === option.value
                         ? 'bg-purple-600 text-white shadow-lg'
                         : 'text-purple-600 hover:bg-purple-50'
@@ -291,30 +307,32 @@ export default function SchoolShow({ schoolId = 1 }) {
               </div>
             </div>
 
-            {/* Chart */}
-            <div className="h-80">
-              <SimpleChart data={getChartData()} labels={getChartData().labels} />
+            {/* Chart Container - Fixed Height */}
+            <div className="w-full p-4 overflow-hidden rounded-lg bg-white/60 backdrop-blur-sm">
+              <div className="w-full" style={{ height: '250px' }}>
+                <SimpleChart data={getChartData()} labels={getChartData().labels} />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Detail Sections */}
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-6 md:gap-8 lg:grid-cols-2">
           {/* Teachers Section */}
           <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
-            <div className="p-6 bg-gradient-to-r from-purple-500 to-purple-600">
-              <h2 className="text-xl font-bold text-white">👨‍🏫 Data Guru</h2>
+            <div className="p-4 md:p-6 bg-gradient-to-r from-purple-500 to-purple-600">
+              <h2 className="text-lg font-bold text-white md:text-xl">👨‍🏫 Data Guru</h2>
             </div>
-            <div className="p-6">
+            <div className="p-4 md:p-6">
               <div className="space-y-3 overflow-y-auto max-h-64">
                 {school.users?.filter(u => u.role === 'guru').map((guru, index) => (
                   <div key={index} className="flex items-center gap-3 p-3 transition-colors duration-300 rounded-lg bg-gray-50 hover:bg-purple-50">
                     <div className="flex items-center justify-center w-8 h-8 bg-purple-100 rounded-full">
                       <span className="text-sm font-semibold text-purple-600">{guru.name.charAt(0)}</span>
                     </div>
-                    <div>
-                      <p className="font-medium text-gray-900">{guru.name}</p>
-                      <p className="text-sm text-gray-500">{guru.email}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-gray-900 truncate">{guru.name}</p>
+                      <p className="text-sm text-gray-500 truncate">{guru.email}</p>
                     </div>
                   </div>
                 ))}
@@ -324,11 +342,11 @@ export default function SchoolShow({ schoolId = 1 }) {
 
           {/* Classes Section */}
           <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
-            <div className="p-6 bg-gradient-to-r from-blue-500 to-blue-600">
-              <h2 className="text-xl font-bold text-white">🏫 Data Kelas</h2>
+            <div className="p-4 md:p-6 bg-gradient-to-r from-blue-500 to-blue-600">
+              <h2 className="text-lg font-bold text-white md:text-xl">🏫 Data Kelas</h2>
             </div>
-            <div className="p-6">
-              <div className="grid grid-cols-2 gap-3">
+            <div className="p-4 md:p-6">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {school.classes?.map((kelas, index) => (
                   <div key={index} className="p-3 text-center transition-colors duration-300 rounded-lg bg-gray-50 hover:bg-blue-50">
                     <p className="font-medium text-gray-900">{kelas.class_name}</p>
@@ -339,57 +357,34 @@ export default function SchoolShow({ schoolId = 1 }) {
           </div>
 
           {/* Students Section */}
-          <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
-            <div className="p-6 bg-gradient-to-r from-green-500 to-green-600">
-              <h2 className="text-xl font-bold text-white">👨‍🎓 Data Siswa</h2>
+          <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
+            <div className="p-4 md:p-6 bg-gradient-to-r from-green-500 to-green-600">
+              <h2 className="text-lg font-bold text-white md:text-xl">👨‍🎓 Data Siswa</h2>
             </div>
-            <div className="p-6">
-              <div className="space-y-2 overflow-y-auto max-h-64">
-                {school.students?.slice(0, 20).map((siswa, index) => (
+            <div className="p-4 md:p-6">
+              <div className="grid grid-cols-1 gap-2 overflow-y-auto md:grid-cols-2 lg:grid-cols-3 max-h-64">
+                {school.students?.slice(0, 30).map((siswa, index) => (
                   <div key={index} className="flex items-center gap-3 p-2 transition-colors duration-300 rounded-lg hover:bg-green-50">
-                    <span className="text-sm text-gray-500">{index + 1}.</span>
-                    <p className="text-sm font-medium text-gray-900">{siswa.name}</p>
+                    <span className="w-8 text-sm text-right text-gray-500">{index + 1}.</span>
+                    <p className="flex-1 text-sm font-medium text-gray-900 truncate">{siswa.name}</p>
                   </div>
                 ))}
-                {school.students?.length > 20 && (
-                  <p className="text-sm text-center text-gray-500">
-                    ... dan {school.students.length - 20} siswa lainnya
-                  </p>
+                {school.students?.length > 30 && (
+                  <div className="col-span-full">
+                    <p className="py-2 text-sm text-center text-gray-500">
+                      ... dan {school.students.length - 30} siswa lainnya
+                    </p>
+                  </div>
                 )}
-              </div>
-            </div>
-          </div>
-
-          {/* Feedback Section */}
-          <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
-            <div className="p-6 bg-gradient-to-r from-pink-500 to-pink-600">
-              <h2 className="text-xl font-bold text-white">💬 Feedback</h2>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4 overflow-y-auto max-h-64">
-                {school.feedback?.map((fb, index) => (
-                  <div key={index} className="p-4 transition-colors duration-300 rounded-lg bg-gray-50 hover:bg-pink-50">
-                    <p className="text-sm text-gray-700">{fb.content}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <div className="flex text-yellow-400">
-                        {[...Array(5)].map((_, i) => (
-                          <svg key={i} className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
-                          </svg>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
         </div>
 
         {/* Decorative Elements */}
-        <div className="absolute w-20 h-20 bg-purple-200 rounded-full pointer-events-none top-20 left-10 opacity-60 animate-pulse"></div>
-        <div className="absolute w-16 h-16 bg-pink-200 rounded-full opacity-50 pointer-events-none bottom-32 right-16 animate-bounce"></div>
-        <div className="absolute w-12 h-12 bg-indigo-200 rounded-full pointer-events-none top-1/2 right-8 opacity-40 animate-pulse"></div>
+        <div className="absolute hidden w-20 h-20 bg-purple-200 rounded-full pointer-events-none top-20 left-10 opacity-60 animate-pulse md:block"></div>
+        <div className="absolute hidden w-16 h-16 bg-pink-200 rounded-full opacity-50 pointer-events-none bottom-32 right-16 animate-bounce md:block"></div>
+        <div className="absolute hidden w-12 h-12 bg-indigo-200 rounded-full pointer-events-none top-1/2 right-8 opacity-40 animate-pulse md:block"></div>
       </div>
     </div>
   );

@@ -215,7 +215,7 @@ export default function SchoolsIndex() {
 
         {/* Schools Grid */}
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredSchools.map((school, index) => (
+          {filteredSchools.map((school) => (
             <div
               key={school.school_id}
               className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-2xl hover:-translate-y-2 group"
