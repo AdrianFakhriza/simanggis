@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   return (
@@ -11,7 +12,8 @@ export default function Hero() {
       <div className="max-w-4xl mx-auto text-center">
         {/* Welcome Badge */}
         <div className="inline-flex items-center gap-2 px-6 py-3 mb-12 transition-all duration-300 border border-purple-200 rounded-full shadow-lg bg-white/80 backdrop-blur-sm hover:shadow-xl">
-          <span className="font-medium text-purple-600">Statistik Sekolah Terbaru</span>
+          <Link to="/schools"
+           className="font-medium text-purple-600">Statistik Sekolah Terbaru</Link>
           <svg 
             className="w-4 h-4 text-purple-600" 
             fill="none" 
@@ -49,7 +51,8 @@ export default function Hero() {
         </p>
 
         {/* CTA Button */}
-        <button 
+        <Link
+          to="/register" 
           className="relative px-8 py-4 overflow-hidden text-lg font-semibold text-white transition-all duration-300 transform rounded-full shadow-lg hover:shadow-xl hover:scale-105"
           style={{
             background: 'linear-gradient(to right, #9333ea, #6366f1)',
@@ -62,7 +65,7 @@ export default function Hero() {
           }}
         >
           Daftar Sekarang
-        </button>
+        </Link>
 
         {/* Decorative Elements */}
         <div className="absolute w-20 h-20 bg-purple-200 rounded-full top-20 left-10 opacity-60 animate-pulse"></div>

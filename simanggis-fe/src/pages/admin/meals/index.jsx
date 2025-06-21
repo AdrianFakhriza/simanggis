@@ -22,7 +22,7 @@ export default function AdminDistribution() {
     fetchDistributions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // hanya panggil sekali saat pertama render
-
+  
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -121,7 +121,7 @@ export default function AdminDistribution() {
                   <tr key={index}>
                     <td className="px-4 py-2 border">{row.class_name}</td>
                     <td className="px-4 py-2 border">{row.total_distributions}</td>
-                    <td className="px-4 py-2 border">{row.meal_date_formatted}</td>
+                    <td className="px-4 py-2 border">{row.meal_date}</td>
                     <td className="px-4 py-2 border">{row.teacher_name}</td>
                   </tr>
                 ))

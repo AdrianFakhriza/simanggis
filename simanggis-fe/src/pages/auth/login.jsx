@@ -99,7 +99,7 @@ export default function Login() {
         </div>
 
         <Link
-          to="http://127.0.0.1:8000/" // <-- GANTI DENGAN URL WEBSITE LOGIN GURU
+          to="https://simanggis.pro/login" // <-- GANTI DENGAN URL WEBSITE LOGIN GURU
           className="block w-full py-3 font-semibold text-center text-purple-600 transition-all duration-300 transform border-2 border-purple-500 rounded-full hover:bg-purple-500 hover:text-white hover:scale-105"
         >
           Login sebagai Guru

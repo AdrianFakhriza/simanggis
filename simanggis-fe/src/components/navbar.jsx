@@ -5,15 +5,15 @@ import Logo from '../assets/Logo_SiMANGGIS.png';
 export default function Navbar() {
   return (
     <nav 
-      className="relative z-10 flex items-center justify-between px-8 py-4 shadow-lg"
-      style={{
-        background: 'linear-gradient(135deg, #f3e8ff 0%, #fdf2f8 50%, #e0e7ff 100%)'
-      }}
+      className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 shadow-lg"
+    style={{
+      background: 'linear-gradient(135deg, #f3e8ff 0%, #fdf2f8 50%, #e0e7ff 100%)'
+    }}
     >
       {/* Company Logo */}
       <div className="flex items-center flex-shrink-0 text-white"> 
         <img 
-          src={Logo}
+          src={Logo}  
           alt="Company Logo" 
           className="w-auto h-12" 
         />
