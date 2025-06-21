@@ -36,12 +36,12 @@ export default function Testimonial() {
         {/* Testimonial Card 3 */}
         <div className="relative flex flex-col items-center p-8 bg-white border border-indigo-100 shadow-xl rounded-3xl">
           <div className="absolute w-12 h-12 -translate-x-1/2 bg-indigo-100 rounded-full -top-6 left-1/2"></div>
-          <p className="mb-4 text-lg italic text-gray-700">“Sebagai orang tua, saya sangat mendukung program ini. Anak saya jadi lebih sehat dan aktif.”</p>
+          <p className="mb-4 text-lg italic text-gray-700">“Sebagai kepala sekolah, saya sangat mendukung program ini. program MBG jadi lebih terpantau oleh masyarakat.”</p>
           <div className="flex items-center gap-3 mt-4">
             <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="user" className="w-10 h-10 border-2 border-indigo-300 rounded-full" />
             <div>
-              <div className="font-semibold text-indigo-600">Bu Rina</div>
-              <div className="text-xs text-gray-400">Orang Tua Murid</div>
+              <div className="font-semibold text-indigo-600">Celline</div>
+              <div className="text-xs text-gray-400">Kepala Sekolah SMAN 2 Cibinong</div>
             </div>
           </div>
         </div>

@@ -116,12 +116,6 @@ const Statistic = () => {
         </div>
       </div>
       
-
-
-        {/* CTA Button */}
-        <button className="px-6 py-3 font-semibold text-black transition duration-300 bg-yellow-400 rounded shadow-md hover:bg-yellow-300">
-          READ CASE STUDY
-        </button>
       </div>
     </section>
 
