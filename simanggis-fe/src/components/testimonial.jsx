@@ -12,19 +12,19 @@ export default function Testimonial() {
         {/* Testimonial Card 1 */}
         <div className="relative flex flex-col items-center p-8 bg-white border border-purple-100 shadow-xl rounded-3xl">
           <div className="absolute w-12 h-12 -translate-x-1/2 bg-purple-100 rounded-full -top-6 left-1/2"></div>
-          <p className="mb-4 text-lg italic text-gray-700">“Program ini sangat membantu anak-anak di sekolah kami. Makanannya sehat dan anak-anak jadi lebih semangat belajar!”</p>
+          <p className="mb-4 text-lg italic text-gray-700">“SiMANGGIS sangat bagus untuk mendukung program MBG, ini sangat membantu anak-anak di sekolah kami. Makanannya sehat dan anak-anak jadi lebih semangat belajar!”</p>
           <div className="flex items-center gap-3 mt-4">
             <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="user" className="w-10 h-10 border-2 border-purple-300 rounded-full" />
             <div>
               <div className="font-semibold text-purple-700">Ibu Sari</div>
-              <div className="text-xs text-gray-400">Guru SDN 1</div>
+              <div className="text-xs text-gray-400">Guru SDN 1 Jakarta</div>
             </div>
           </div>
         </div>
         {/* Testimonial Card 2 */}
         <div className="relative flex flex-col items-center p-8 bg-white border border-pink-100 shadow-xl rounded-3xl">
           <div className="absolute w-12 h-12 -translate-x-1/2 bg-pink-100 rounded-full -top-6 left-1/2"></div>
-          <p className="mb-4 text-lg italic text-gray-700">“Saya merasa lebih sehat dan senang bisa makan bersama teman-teman setiap hari.”</p>
+          <p className="mb-4 text-lg italic text-gray-700">“Saya menyukai SiMANGGIS, Karena bisa memonitoring mendapatkan Makan Bergizi Gratis, Saya senang bisa makan bersama teman-teman setiap hari.”</p>
           <div className="flex items-center gap-3 mt-4">
             <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="user" className="w-10 h-10 border-2 border-pink-300 rounded-full" />
             <div>
@@ -36,7 +36,7 @@ export default function Testimonial() {
         {/* Testimonial Card 3 */}
         <div className="relative flex flex-col items-center p-8 bg-white border border-indigo-100 shadow-xl rounded-3xl">
           <div className="absolute w-12 h-12 -translate-x-1/2 bg-indigo-100 rounded-full -top-6 left-1/2"></div>
-          <p className="mb-4 text-lg italic text-gray-700">“Sebagai kepala sekolah, saya sangat mendukung program ini. program MBG jadi lebih terpantau oleh masyarakat.”</p>
+          <p className="mb-4 text-lg italic text-gray-700">“Sebagai kepala sekolah, saya sangat mendukung website SiMANGGIS. program MBG jadi lebih terpantau oleh masyarakat terutama pihak sekolah.”</p>
           <div className="flex items-center gap-3 mt-4">
             <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="user" className="w-10 h-10 border-2 border-indigo-300 rounded-full" />
             <div>

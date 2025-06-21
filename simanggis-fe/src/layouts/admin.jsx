@@ -94,7 +94,7 @@ export default function AdminLayout() {
                 className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
               >
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6m-6 0l-7 7-2-2" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 15v4m6-16v16m6-10v10m6-14v14" />
                 </svg>
                 <span className="ml-3">Dashboard</span>
               </Link>
@@ -156,7 +156,8 @@ export default function AdminLayout() {
                 className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
               >
                 <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M8 16v1a4 4 0 004 4 4 4 0 004-4v-1M12 12a4 4 0 100-8 4 4 0 000 8z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
                 </svg>
                 <span className="ml-3">Data Distribusi</span>
               </Link>

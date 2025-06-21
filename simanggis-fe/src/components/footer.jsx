@@ -30,7 +30,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  to="/sekolah"
+                  to="/schools"
                   className="transition hover:text-purple-800 dark:hover:text-purple-300"
                 >
                   School
