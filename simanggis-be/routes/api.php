@@ -33,7 +33,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('classes', ClassesController::class);
     Route::apiResource('feedback', FeedbackController::class);
     Route::apiResource('meal-check', MealCheckController::class)->only(['index', 'show', 'store']);
-    Route::apiResource('meal-distribution', MealDistributionController::class);
+    Route::apiResource('meal-distribution', MealDistributionController::class)->only (['index','store'])  ;
     Route::apiResource('schools', SchoolController::class);
     Route::apiResource('students', StudentController::class);
     Route::apiResource('teachers', TeacherController::class);

@@ -1,9 +1,13 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Logo from "../assets/Logo_SiMANGGIS.png";
+import { useState } from "react";
+import { UserCircle } from "lucide-react";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
   const handleLogout = () => {
     const confirmed = window.confirm("Yakin ingin logout?");
@@ -12,6 +16,11 @@ export default function AdminLayout() {
       navigate("/login");
     }
   };
+
+  const toggleDropdown = () => {
+  setDropdownOpen(!dropdownOpen);
+};
+
 
   return (
     <div className="min-h-screen antialiased bg-gray-100 dark:bg-gray-900">
@@ -40,22 +49,33 @@ export default function AdminLayout() {
               </div>
             </Link>
           </div>
-          <div className="flex items-center lg:order-2">
+          <div className="flex items-center gap-2">
             <button
               type="button"
+               onClick={toggleDropdown}
               className="flex mx-3 text-sm bg-blue-100 rounded-full dark:bg-blue-900 md:mr-0 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-600"
               id="user-menu-button"
             >
               <span className="sr-only">Open user menu</span>
-              <img
-                className="border-2 border-white rounded-full w-9 h-9"
-                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gough.png"
-                alt="user photo"
-              />
+              <UserCircle className="text-blue-600 w-7 h-7 dark:text-white" />
             </button>
-            <span className="hidden mr-4 font-semibold text-gray-700 md:block dark:text-gray-200">
-              Neil Sims
+            <span className="font-semibold text-gray-700 dark:text-gray-200">
+             User
             </span>
+            {dropdownOpen && (
+              <div className="absolute right-0 z-50 mt-2 bg-white rounded shadow top-full w-44 dark:bg-gray-700">
+                <ul className="py-1 text-sm text-gray-700 dark:text-gray-200">
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full px-4 py-2 text-left text-red-600 hover:bg-red-100 dark:hover:bg-gray-600"
+                    >
+                      Logout
+                    </button>
+                     </li>
+                </ul>
+              </div>
+            )}
           </div>
         </div>
       </nav>
@@ -129,18 +149,17 @@ export default function AdminLayout() {
                 <span className="ml-3">Data Murid</span>
               </Link>
             </li>
-
-            {/* Logout button */}
-            <li className="pt-5 border-t border-blue-200">
-              <button
-                onClick={handleLogout}
-                className="flex items-center w-full p-2 text-red-600 transition-colors rounded-lg hover:bg-red-50"
+            
+            <li>
+              <Link
+                to="/admin/meals"
+                className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M8 16v1a4 4 0 004 4 4 4 0 004-4v-1M12 12a4 4 0 100-8 4 4 0 000 8z" />
                 </svg>
-                Keluar
-              </button>
+                <span className="ml-3">Data Distribusi</span>
+              </Link>
             </li>
           </ul>
         </div>

@@ -27,6 +27,8 @@ import GuestRoute from "./components/guestRoute";
 import EditClass from "./pages/admin/classes/edit";
 import ClassDetailPage from "./pages/admin/classes/detail";
 import Dashboard from "./pages/admin/dashboard";
+import AdminDistribution from "./pages/admin/meals";
+import CreateMeal from "./pages/admin/meals/create";
 
 
 function App() {
@@ -77,11 +79,19 @@ function App() {
             <Route path="edit/:id" element={<EditStudent />} />
           </Route>
 
+          {/* admin teacher */}
           <Route path="teachers">
             <Route index element={<AdminTeacher />} />
             <Route path="create" element={<CreateTeacher />} />
             <Route path="edit/:id" element={<EditTeacher />} />
           </Route>
+
+          {/* admin meals */}
+          <Route path="meals">
+            <Route index element={<AdminDistribution />} />
+            <Route path="create" element={<CreateMeal/>} />
+          </Route>
+
         </Route>
 
         {/* Rute login hanya untuk tamu */}
