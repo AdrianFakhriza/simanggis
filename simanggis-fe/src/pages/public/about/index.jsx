@@ -5,31 +5,31 @@ export default function About() {
     {
       name: "Adib Muhammad Zain",
       universitas: "Universitas Nurul Jadid",
-      role: "Backend Developer",
+      role: "Fullstack Developer",
       avatar: "https://simanggis.pro/foto/adib.png",
     },
     {
       name: "Muhammad Efendi Vivria",
       universitas: "Universitas Muhammadiyah Jakarta",
-      role: "Frontend Developer",
+      role: "Fullstack Developer",
       avatar: "https://simanggis.pro/foto/pendi.jpg",
     },
     {
       name: "Adrian Fakhriza Hakim",
       universitas: "UPN Veteran Jakarta",
-      role: "Backend Developer",
+      role: "Fullstack Developer",
       avatar: "https://simanggis.pro/foto/adrian.jpg",
     },
     {
       name: "Aditya Ega Pratama",
       universitas: "UPN Veteran Jakarta",
-      role: "Backend Developer",
+      role: "Fullstack Developer",
       avatar: "https://simanggis.pro/foto/ega.jpg",
     },
     {
       name: "Najlaa Maharani Dewi Tiara G.",
       universitas: "Universitas Muhammadiyah Jakarta",
-      role: "Frontend Developer",
+      role: "Fullstack Developer",
       avatar: "https://simanggis.pro/foto/najla.jpg",
     }
   ];
