@@ -9,16 +9,22 @@ export default function About() {
         img: "simanggis-fe\src\assets\Logo_SiMANGGIS.png"
         },
         {
-        name: "Sari Dewi",
+        name: "Adrian Fakhriza Hakim",
         role: "UI/UX Designer",
         description: "Desainer berpengalaman yang fokus pada user experience dan interface yang intuitif",
         img: "/images/team/sari.jpg"
         },
         {
-        name: "Budi Santoso",
+        name: "Aditya Ega Pratama",
         role: "Backend Developer",
         description: "Spesialis dalam pengembangan API dan database untuk sistem skala besar",
         img: "/images/team/budi.jpg"
+        },
+        {
+        name: "Maya Putri",
+        role: "Data Analyst",
+        description: "Ahli analisis data dengan fokus pada monitoring dan reporting sistem pendidikan",
+        img: "/images/team/maya.jpg"
         },
         {
         name: "Maya Putri",

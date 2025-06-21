@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -50,11 +50,13 @@ export default function Login() {
       <div className="absolute w-32 h-32 bg-pink-200 rounded-full opacity-50 -bottom-10 -right-5 animate-bounce"></div>
       <div className="absolute w-24 h-24 bg-indigo-200 rounded-full top-20 -left-5 opacity-40 animate-pulse"></div>
 
-      <div className="relative w-full max-w-md p-8 space-y-6 transition-all duration-300 shadow-xl bg-white/70 backdrop-blur-xl rounded-2xl">
-        <h2 className="text-3xl font-bold text-center text-gray-800">Selamat Datang Kembali</h2>
-        <p className="text-center text-gray-600">
-          Silakan masuk untuk melanjutkan.
-        </p>
+      <div className="relative w-full max-w-md p-8 space-y-4 transition-all duration-300 shadow-xl bg-white/70 backdrop-blur-xl rounded-2xl">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold text-gray-800">Selamat Datang Kembali</h2>
+          <p className="mt-2 text-gray-600">
+            Login sebagai Admin.
+          </p>
+        </div>
 
         {error && <div className="px-4 py-3 text-center text-red-800 bg-red-200 border border-red-300 rounded-lg">{error}</div>}
         
@@ -82,15 +84,29 @@ export default function Login() {
           <button 
             type="submit" 
             disabled={loading} 
-            className="w-full py-3 mt-4 font-semibold text-white transition-all duration-300 transform rounded-full shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-70 disabled:scale-100" 
+            className="w-full py-3 mt-2 font-semibold text-white transition-all duration-300 transform rounded-full shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-70 disabled:scale-100" 
             style={{ background: 'linear-gradient(to right, #7c3aed, #4f46e5)' }}
           >
             {loading ? "Memproses..." : "Login"}
           </button>
         </form>
 
-        <p className="pt-4 text-center text-gray-600">
-          Belum punya akun?{" "}
+        {/* --- TAMBAHAN: Divider dan Tombol Login Guru --- */}
+        <div className="relative flex items-center py-2">
+            <div className="flex-grow border-t border-purple-200"></div>
+            <span className="flex-shrink px-4 text-xs text-gray-500 uppercase">Atau</span>
+            <div className="flex-grow border-t border-purple-200"></div>
+        </div>
+
+        <Link
+          to="http://127.0.0.1:8000/" // <-- GANTI DENGAN URL WEBSITE LOGIN GURU
+          className="block w-full py-3 font-semibold text-center text-purple-600 transition-all duration-300 transform border-2 border-purple-500 rounded-full hover:bg-purple-500 hover:text-white hover:scale-105"
+        >
+          Login sebagai Guru
+        </Link>
+        
+        <p className="pt-2 text-center text-gray-600">
+          Belum punya akun Admin?{" "}
           <button onClick={() => navigate("/register")} className="font-semibold text-purple-600 transition hover:text-purple-800 hover:underline focus:outline-none">
             Daftar di sini
           </button>
