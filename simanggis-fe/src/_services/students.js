@@ -1,6 +1,6 @@
 import API from "../_api";
 
-const API_URL = "http://localhost:8000/api/students";
+const API_URL = "https://simanggis.pro/api/students";
 
 // Ambil semua siswa
 export const getStudents = async () => {
@@ -39,7 +39,7 @@ export const createStudents = async (data) => {
 // Hapus siswa
 export async function deleteStudent(id) {
   const token = localStorage.getItem("token");
-  const res = await fetch(`http://localhost:8000/api/students/${id}`, {
+  const res = await fetch(`https://simanggis.pro/api/students/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
   });

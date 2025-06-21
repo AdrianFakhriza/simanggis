@@ -108,7 +108,7 @@ export default function SchoolsIndex() {
       setError(null);
 
       // Ambil data sekolah dari API
-      const response = await axios.get('http://127.0.0.1:8000/api/schoolsPublic');
+      const response = await axios.get('https://simanggis.pro/api/schoolsPublic');
       // Jika response.data.data adalah array sekolah
       const schoolsData = response.data.data || response.data;
 

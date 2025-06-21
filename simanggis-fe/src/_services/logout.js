@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000/api";
+const API_URL = "https://simanggis.pro/api";
 
 export async function logout(token) {
   const res = await fetch(`${API_URL}/logout`, {

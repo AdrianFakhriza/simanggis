@@ -10,7 +10,7 @@ const Statistic = () => {
 
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/statistics')
+    axios.get('https://simanggis.pro/api/statistics')
       .then((response) => {
         const res = response.data.data;
 

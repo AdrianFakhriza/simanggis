@@ -1,5 +1,5 @@
 export async function register({ name, username, email, password, password_confirmation, school_name }) {
-  const res = await fetch("http://localhost:8000/api/register", {
+  const res = await fetch("https://simanggis.pro/api/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ name, username, email, password, password_confirmation, school_name }),

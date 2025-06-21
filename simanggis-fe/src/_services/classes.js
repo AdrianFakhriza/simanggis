@@ -1,6 +1,6 @@
 import API from "../_api";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = "https://simanggis.pro/api";
 
 // script pertama
 export const getClasses = async () => {
