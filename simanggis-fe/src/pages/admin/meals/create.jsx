@@ -18,11 +18,10 @@ export default function CreateMeal() {
       try {
         const data = await getClasses();
         setClasses(data);
-      } catch{
+      } catch {
         setError("Gagal mengambil data kelas.");
       }
     };
-
     fetchClasses();
   }, []);
 
@@ -37,73 +36,82 @@ export default function CreateMeal() {
 
     try {
       await createMeals(form);
-      setSuccess("Jadwal distribusi berhasil ditambahkan!");
-      setTimeout(() => navigate("/admin/meals"), 1000);
+      setSuccess("✅ Jadwal distribusi berhasil ditambahkan!");
+      setTimeout(() => navigate("/admin/meals"), 1500);
     } catch (error) {
-  if (error.response?.data?.errors) {
-    console.error("Validation Errors:", error.response.data.errors);
-  } else {
-    console.error("Error:", error);
-  }
-  throw error;
+      if (error.response?.data?.errors) {
+        setError("Terdapat kesalahan validasi. Silakan periksa kembali.");
+      } else {
+        setError("Terjadi kesalahan saat menyimpan data.");
+      }
     }
   };
 
   return (
-    <div className="w-full max-w-2xl p-6 mx-auto bg-white rounded shadow-md">
-      <h2 className="mb-4 text-2xl font-semibold text-blue-600">
-        Tambah Jadwal Distribusi Makanan
-      </h2>
+    <div className="min-h-screen px-4 py-10 bg-blue-50">
+      <div className="max-w-2xl p-8 mx-auto bg-white rounded-lg shadow-lg">
+        <h2 className="mb-6 text-3xl font-bold text-blue-700">
+          Tambah Jadwal Distribusi Makanan
+        </h2>
 
-      {error && <div className="p-3 mb-4 text-red-700 bg-red-100 rounded">{error}</div>}
-      {success && <div className="p-3 mb-4 text-green-700 bg-green-100 rounded">{success}</div>}
+        {error && (
+          <div className="p-4 mb-4 text-sm text-red-700 bg-red-100 border border-red-300 rounded-md">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 border border-green-300 rounded-md">
+            {success}
+          </div>
+        )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="class_id" className="block mb-1 text-sm font-semibold">
-            Pilih Kelas
-          </label>
-          <select
-            id="class_id"
-            name="class_id"
-            value={form.class_id}
-            onChange={handleChange}
-            className="block w-full py-2 border-gray-300 rounded"
-            required
-          >
-            <option value="">-- Pilih Kelas --</option>
-            {classes.map((cls) => (
-              <option key={cls.class_id} value={cls.class_id}>
-                {cls.class_name} (Wali: {cls.teacher?.name || "Belum Ada"})
-              </option>
-            ))}
-          </select>
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="class_id" className="block mb-1 font-semibold text-blue-800">
+              Pilih Kelas
+            </label>
+            <select
+              id="class_id"
+              name="class_id"
+              value={form.class_id}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            >
+              <option value="">-- Pilih Kelas --</option>
+              {classes.map((cls) => (
+                <option key={cls.class_id} value={cls.class_id}>
+                  {cls.class_name} (Wali: {cls.teacher?.name || "Belum Ada"})
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="meal_date" className="block mb-1 text-sm font-semibold">
-            Tanggal Distribusi
-          </label>
-          <input
-            type="date"
-            id="meal_date"
-            name="meal_date"
-            value={form.meal_date}
-            onChange={handleChange}
-            required
-            className="block w-full py-2 border-gray-300 rounded"
-          />
-        </div>
+          <div>
+            <label htmlFor="meal_date" className="block mb-1 font-semibold text-blue-800">
+              Tanggal Distribusi
+            </label>
+            <input
+              type="date"
+              id="meal_date"
+              name="meal_date"
+              value={form.meal_date}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            />
+          </div>
 
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-          >
-            Jadwalkan
-          </button>
-        </div>
-      </form>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 transition"
+            >
+              Jadwalkan
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

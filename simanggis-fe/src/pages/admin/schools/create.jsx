@@ -1,17 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";// Pastikan path ini sesuai dengan struktur proyek Anda
-// const CreateSchool = () => {
-//     const [form, setForm] = useState({
-//         school_name: "",
-//         address: "",
-//         contact_number: "",
-//     });
-//     const [errors, setErrors] = useState([]);
-//     const navigate = useNavigate();
+import { useNavigate } from "react-router-dom";
+// import { createSchools } from "../services/schoolService"; // pastikan ini aktif
 
-//     const handleChange = (e) => {
-//         setForm({ ...form, [e.target.name]: e.target.value });
-//     };
 export default function SchoolForm() {
     const [form, setForm] = useState({
         school_name: "",
@@ -29,8 +19,7 @@ export default function SchoolForm() {
         e.preventDefault();
         setErrors([]);
         try {
-            // Gunakan service createSchool yang sudah diimport
-            const response = await createSchools(form);
+            const response = await createSchools(form); // pastikan tersedia
             if (response.errors) {
                 setErrors(response.errors);
                 return;
@@ -43,11 +32,14 @@ export default function SchoolForm() {
     };
 
     return (
-        <div className="container px-4 py-8 mx-auto">
-            <div className="max-w-lg p-6 mx-auto bg-white rounded shadow">
-                <h2 className="mb-6 text-xl font-bold">Tambah Sekolah</h2>
+        <div className="container px-4 py-10 mx-auto bg-purple-50 min-h-screen">
+            <div className="max-w-xl mx-auto p-8 bg-white rounded-xl shadow-lg border border-purple-200 transition-all duration-300">
+                <h2 className="mb-6 text-2xl font-extrabold text-purple-700 flex items-center gap-2">
+                    🏫 Edit Informasi Sekolah
+                </h2>
+
                 {errors.length > 0 && (
-                    <div className="p-3 mb-4 text-red-700 bg-red-100 rounded">
+                    <div className="p-4 mb-4 text-red-700 bg-red-100 border border-red-300 rounded-lg">
                         <ul className="pl-5 list-disc">
                             {errors.map((error, idx) => (
                                 <li key={idx}>{error}</li>
@@ -55,10 +47,11 @@ export default function SchoolForm() {
                         </ul>
                     </div>
                 )}
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="school_name" className="block mb-1 font-semibold">
-                            Nama Sekolah
+
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                        <label htmlFor="school_name" className="block mb-1 font-semibold text-purple-700">
+                            📘 Nama Sekolah
                         </label>
                         <input
                             type="text"
@@ -66,13 +59,14 @@ export default function SchoolForm() {
                             id="school_name"
                             value={form.school_name}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-4 py-2 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="address" className="block mb-1 font-semibold">
-                            Alamat
+
+                    <div>
+                        <label htmlFor="address" className="block mb-1 font-semibold text-purple-700">
+                            🗺️ Alamat
                         </label>
                         <textarea
                             name="address"
@@ -80,13 +74,14 @@ export default function SchoolForm() {
                             rows="3"
                             value={form.address}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-4 py-2 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                             required
                         />
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="contact_number" className="block mb-1 font-semibold">
-                            No. Kontak
+
+                    <div>
+                        <label htmlFor="contact_number" className="block mb-1 font-semibold text-purple-700">
+                            📞 Nomor Kontak
                         </label>
                         <input
                             type="text"
@@ -94,21 +89,22 @@ export default function SchoolForm() {
                             id="contact_number"
                             value={form.contact_number}
                             onChange={handleChange}
-                            className="w-full px-3 py-2 border rounded"
+                            className="w-full px-4 py-2 border border-purple-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                             required
                         />
                     </div>
-                    <div className="flex justify-end">
+
+                    <div className="flex justify-end space-x-3 pt-4">
                         <button
                             type="button"
                             onClick={() => navigate("/admin/schools")}
-                            className="px-4 py-2 mr-3 bg-gray-200 rounded hover:bg-gray-300"
+                            className="px-4 py-2 font-semibold text-purple-700 bg-purple-100 border border-purple-300 rounded-lg hover:bg-purple-200 transition"
                         >
                             Batal
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                            className="px-4 py-2 font-semibold text-white bg-purple-600 rounded-lg hover:bg-purple-700 transition"
                         >
                             Simpan
                         </button>

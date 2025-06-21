@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getSchools, updateSchool } from "../../../_services/schools";
+import { Edit } from "lucide-react";
+
 
 export default function EditSchool() {
   const [school, setSchool] = useState({
@@ -52,7 +54,7 @@ export default function EditSchool() {
   };
 
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-xl p-6 mx-auto mt-10 bg-white border rounded-lg shadow-md">
       <div className="mb-6">
         <nav className="flex text-sm text-gray-600" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -75,7 +77,9 @@ export default function EditSchool() {
       </div>
 
       <div className="p-6 bg-white rounded shadow">
-        <h2 className="mb-6 text-xl font-bold">Edit Informasi Sekolah</h2>
+        <h2 className="flex items-center mb-4 text-xl font-bold text-blue-700">
+           <Edit className="w-5 h-5 mr-2" />
+          Edit Informasi Sekolah</h2>
 
         {errors.length > 0 && (
           <div className="p-3 mb-4 text-red-700 bg-red-100 rounded">
@@ -96,7 +100,7 @@ export default function EditSchool() {
               id="school_name"
               value={school.school_name}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
+              className="w-full px-3 py-2 mt-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -108,7 +112,7 @@ export default function EditSchool() {
               id="address"
               value={school.address}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
+              className="w-full px-3 py-2 mt-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows="3"
               required
             />
@@ -122,12 +126,12 @@ export default function EditSchool() {
               id="contact_number"
               value={school.contact_number}
               onChange={handleChange}
-              className="w-full px-3 py-2 border rounded"
+              className="w-full px-3 py-2 mt-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
-          <div className="flex justify-end">
+          <div className="flex justify-end gap-3 mt-4">
             <Link to="/admin/schools" className="px-4 py-2 mr-3 bg-gray-200 rounded hover:bg-gray-300">
               Batal
             </Link>
