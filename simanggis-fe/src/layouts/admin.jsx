@@ -149,6 +149,18 @@ export default function AdminLayout() {
                 <span className="ml-3">Data Murid</span>
               </Link>
             </li>
+            
+            <li>
+              <Link
+                to="/admin/meals"
+                className="flex items-center p-2 text-base font-semibold text-blue-700 rounded-lg hover:bg-blue-100 dark:text-blue-200 dark:hover:bg-gray-700"
+              >
+                <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M8 16v1a4 4 0 004 4 4 4 0 004-4v-1M12 12a4 4 0 100-8 4 4 0 000 8z" />
+                </svg>
+                <span className="ml-3">Data Distribusi</span>
+              </Link>
+            </li>
           </ul>
         </div>
       </aside>
