@@ -321,7 +321,7 @@ export default function SchoolShow() {
           {/* Teachers Section */}
           <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
             <div className="p-4 md:p-6 bg-gradient-to-r from-purple-500 to-purple-600">
-              <h2 className="text-lg font-bold text-white md:text-xl">👨‍🏫 Data Guru</h2>
+              <h2 className="text-lg font-bold text-black md:text-xl">👨‍🏫 Data Guru</h2>
             </div>
             <div className="p-4 md:p-6">
               <div className="space-y-3 overflow-y-auto max-h-64">
@@ -343,7 +343,7 @@ export default function SchoolShow() {
           {/* Classes Section */}
           <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
             <div className="p-4 md:p-6 bg-gradient-to-r from-blue-500 to-blue-600">
-              <h2 className="text-lg font-bold text-white md:text-xl">🏫 Data Kelas</h2>
+              <h2 className="text-lg font-bold text-black md:text-xl">🏫 Data Kelas</h2>
             </div>
             <div className="p-4 md:p-6">
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -359,7 +359,7 @@ export default function SchoolShow() {
           {/* Students Section */}
           <div className="overflow-hidden transition-all duration-500 border border-purple-100 shadow-lg lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
             <div className="p-4 md:p-6 bg-gradient-to-r from-green-500 to-green-600">
-              <h2 className="text-lg font-bold text-white md:text-xl">👨‍🎓 Data Siswa</h2>
+              <h2 className="text-lg font-bold text-black md:text-xl">👨‍🎓 Data Siswa</h2>
             </div>
             <div className="p-4 md:p-6">
               <div className="grid grid-cols-1 gap-2 overflow-y-auto md:grid-cols-2 lg:grid-cols-3 max-h-64">

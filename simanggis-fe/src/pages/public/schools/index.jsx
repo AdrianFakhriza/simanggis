@@ -177,7 +177,7 @@ export default function SchoolsIndex() {
           </h1>
           
           <p className="max-w-3xl mx-auto mb-8 text-lg leading-relaxed text-gray-600 md:text-xl">
-            Berikut adalah daftar sekolah beserta statistik jumlah guru, kelas, siswa, feedback, dan distribusi makan gratis.
+            Berikut adalah daftar sekolah beserta statistik jumlah guru, kelas, siswa, dan distribusi makan gratis.
           </p>
         </div>
 
@@ -254,9 +254,6 @@ export default function SchoolsIndex() {
                   </span>
                   <span className="px-3 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
                     Siswa: {school.students?.length || 0}
-                  </span>
-                  <span className="px-3 py-1 text-xs font-medium text-pink-800 bg-pink-100 rounded-full">
-                    Feedback: {school.feedback?.length || 0}
                   </span>
                   <span className="px-3 py-1 text-xs font-medium text-indigo-800 bg-indigo-100 rounded-full">
                     Distribusi: {school.mealDistributions?.length || 0}
